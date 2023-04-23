@@ -17,6 +17,11 @@ Class::Class(const QString &className)
     this->insert(Key::privateArea,mPrivate);
 }
 
+Class::Class(const Member &member)
+{
+    this->setJsonObject(member);
+}
+
 Class &Class::appendPublic(const Member &member)
 {
 
@@ -30,6 +35,18 @@ Class &Class::appendPrivate(const Member &member)
     mPrivate.append(member);
     this->insert(Key::privateArea,mPrivate);
     return *this;
+}
+
+QList<Member> Class::publicMemberList() const
+{
+    QList<Member> list;
+    auto array = this->value(Key::publicArea).toArray();
+    for( const auto &item : array ){
+        CPP::Member member;
+        member.setJsonObject(item.toObject());
+        list.push_back(member);
+    }
+    return list;
 }
 
 

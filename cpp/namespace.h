@@ -19,8 +19,13 @@ class NameSpace : public CPP::Member
 {
 public:
     NameSpace(const QString &nameSpaceName );
+    NameSpace(const NameSpace &other );
+
+    NameSpace(const Member &other);
 
     void appendMember(const CPP::Member &member);
+
+    QList<Member> memberList() const;
 
 private:
     QJsonArray mArray;

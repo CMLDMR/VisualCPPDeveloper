@@ -13,9 +13,19 @@ class Member : public QJsonObject
 public:
 
     enum class Type;
-    Member(const Type &type );
+    explicit Member();
+    Member(const Type &type);
+    Member(const Member &other);
     Member &setName( const QString &name );
     Member &setType( const QString &type );
+    Type getType() const;
+
+    QString getName() const;
+
+    void setJsonObject( const Member &obj );
+    void setJsonObject( const QJsonObject &obj );
+
+    Member &operator=( const Member &other);
 
 
 private:

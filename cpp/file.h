@@ -4,7 +4,8 @@
 
 #include "member.h"
 
-
+#include <QFile>
+#include <QTextStream>
 
 namespace CPP {
 
@@ -20,6 +21,15 @@ class File : public CPP::Member
 {
 public:
     File( const QString &fileName );
+
+    void saveNameSpace(const CPP::Member &nameSpace);
+
+    QString getFileName() const;
+
+private:
+    QFile mFile;
+
+    QString recursiveFunc(const Member &member );
 
 };
 }

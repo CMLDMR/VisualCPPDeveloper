@@ -26,6 +26,8 @@ public:
     enum class MethodType;
 
     Function( const QString &functionName );
+    Function( const Function &other );
+    Function( const Member &other );
 
     void setThisConstruction();
     void setThisDesConstruction();
@@ -35,6 +37,7 @@ public:
     void setFunctionType(const MethodType &methodType );
     void setReadOnly( const bool value = false );
 
+    QString getReturnType() const;
 
 
     enum class Type{

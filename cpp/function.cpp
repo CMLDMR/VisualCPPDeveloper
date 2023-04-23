@@ -7,9 +7,20 @@ namespace Function {
 Function::Function(const QString &functionName)
     :CPP::Member(CPP::Member::Type::Function)
 {
+    this->setName(functionName);
     this->insert(Key::functionType,"Normal");
     this->setFunctionType(MethodType::Normal);
     this->setReadOnly();
+}
+
+Function::Function(const Function &other)
+{
+    this->setJsonObject(other);
+}
+
+Function::Function(const Member &other)
+{
+    this->setJsonObject(other);
 }
 
 void Function::setThisConstruction()
@@ -55,6 +66,11 @@ void Function::setFunctionType(const MethodType &methodType)
 void Function::setReadOnly(const bool value)
 {
     this->insert(Key::isReadOnly,value);
+}
+
+QString Function::getReturnType() const
+{
+    return this->value(Key::returnType).toString();
 }
 
 } // namespace Function

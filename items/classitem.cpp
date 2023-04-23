@@ -58,6 +58,10 @@ void Items::Class::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 
         CPP::NameSpace::NameSpace nameSpace("Hello");
 
+        CPP::NameSpace::NameSpace world("World");
+
+        nameSpace.appendMember(world);
+
 
         CPP::Class::Class mClass("HelloWorld");
         CPP::Function::Function consFunc("HelloWorld");
@@ -92,26 +96,17 @@ void Items::Class::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 
 
         nameSpace.appendMember(mClass);
+
+
+        CPP::File::File file("HelloWord");
+        file.saveNameSpace(nameSpace);
+
+
+
         qDebug() << nameSpace;
 
-//        mClass.printAll();
-
-//        Generator::Class::Class mClass;
-
-//        mClass.setClassName("HelloWorld");
 
 
-//        mClass.addBoundaryNamespace("Hello");
-//        mClass.addBoundaryNamespace("World");
-
-//        mClass.addPublicFunction({"void Print() const"});
-//        mClass.addPublicFunction({"void set(const int &value) const"});
-
-//        mClass.saveClass();
-//        auto mDialog = new GeneratorDialog::Class();
-
-
-//        mDialog->exec();
 
 
 

@@ -24,10 +24,12 @@ class Class : public Member
 {
 public:
     explicit Class( const QString &className );
-
+    Class( const Member &member );
 
     Class &appendPublic( const CPP::Member &member );
     Class &appendPrivate( const CPP::Member &member );
+
+    QList<Member> publicMemberList() const;
 
 
 private:
