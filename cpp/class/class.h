@@ -30,6 +30,8 @@ public:
     Class &appendPrivate( const CPP::Member &member );
 
     QList<Member> publicMemberList() const;
+    QList<Member> privateMemberList() const;
+    QList<Member> protectedMemberList() const;
 
 
 private:

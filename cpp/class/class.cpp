@@ -49,6 +49,30 @@ QList<Member> Class::publicMemberList() const
     return list;
 }
 
+QList<Member> Class::privateMemberList() const
+{
+    QList<Member> list;
+    auto array = this->value(Key::privateArea).toArray();
+    for( const auto &item : array ){
+        CPP::Member member;
+        member.setJsonObject(item.toObject());
+        list.push_back(member);
+    }
+    return list;
+}
+
+QList<Member> Class::protectedMemberList() const
+{
+    QList<Member> list;
+    auto array = this->value(Key::protectedArea).toArray();
+    for( const auto &item : array ){
+        CPP::Member member;
+        member.setJsonObject(item.toObject());
+        list.push_back(member);
+    }
+    return list;
+}
+
 
 
 } // namespace Class

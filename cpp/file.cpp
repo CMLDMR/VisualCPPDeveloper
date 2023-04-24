@@ -56,14 +56,23 @@ QString File::File::recursiveFunc(const Member &member)
         code += "class "+_class.getName()+"\n";
         code += "{\n";
         code += "private:\n";
-
-        code += "protected:\n";
-
-        code += "public:\n";
-        auto list = _class.publicMemberList();
+        auto list = _class.privateMemberList();
         for( const auto &_member : list ){
             code += this->recursiveFunc(_member);
         }
+        code += "\n";
+        code += "protected:\n";
+        list = _class.protectedMemberList();
+        for( const auto &_member : list ){
+            code += this->recursiveFunc(_member);
+        }
+        code += "\n";
+        code += "public:\n";
+        list = _class.publicMemberList();
+        for( const auto &_member : list ){
+            code += this->recursiveFunc(_member);
+        }
+        code += "\n";
         code += "};// end class " + _class.getName() + "\n\n";
     }else if( member.getType() == CPP::Member::Type::Function ){
         CPP::Function::Function _function(member);
