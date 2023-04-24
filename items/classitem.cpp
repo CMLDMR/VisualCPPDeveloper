@@ -83,8 +83,9 @@ void Items::Class::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 
         CPP::Attribute::Attribute atribute("AdSoyad");
         atribute.setType("std::string");
-        atribute.setInitialValue("Test Yazı");
+        atribute.setInitialValue("\"Test Yazı\"");
         atribute.setReadOnly(true);
+
 
         mClass.appendPublic(atribute);
 

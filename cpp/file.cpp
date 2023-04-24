@@ -3,6 +3,7 @@
 #include "cpp/namespace.h"
 #include "cpp/class/class.h"
 #include "cpp/function.h"
+#include "cpp/attribute.h"
 
 namespace CPP {
 
@@ -67,6 +68,11 @@ QString File::File::recursiveFunc(const Member &member)
     }else if( member.getType() == CPP::Member::Type::Function ){
         CPP::Function::Function _function(member);
         code += _function.getReturnType() + " " +_function.getName() + "();\n";
+    }else if( member.getType() == CPP::Member::Type::Attribute ){
+        CPP::Attribute::Attribute _attribute(member);
+        QString constStr = _attribute.getIsReadOnly() ? "const" : "";
+        QString initialValue = _attribute.getInitialValue().isEmpty() ? "" : _attribute.getInitialValue();
+        code += constStr + " " + _attribute.getType() + " " + _attribute.getName() +"{"+initialValue+"};\n";
     }
 
 

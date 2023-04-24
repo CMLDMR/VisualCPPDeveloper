@@ -20,10 +20,15 @@ class Attribute : public CPP::Member
 {
 public:
     Attribute(const QString &name);
+    Attribute(const Member &other);
 
     void setInitialValue( const QString &value );
     void setReadOnly( const bool value = false );
     void setType( const QString type );
+
+    bool getIsReadOnly() const;
+    QString getInitialValue() const;
+    QString getType() const;
 
 };
 

@@ -14,6 +14,10 @@ class GraphicScene : public QGraphicsScene
     Q_OBJECT
 public:
     explicit GraphicScene(QObject *parent = nullptr);
+
+    // QGraphicsScene interface
+protected:
+    virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event) override;
 };
 
 } // namespace Scene

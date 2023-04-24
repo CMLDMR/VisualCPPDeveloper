@@ -66,8 +66,10 @@ Member::Type Member::getType() const
         return Type::Class;
     }else if( this->value("type").toString() == "Function" ){
         return Type::Function;
-    }else{
+    }else if( this->value("type").toString() == "Attribute" ){
         return Type::Attribute;
+    }else{
+        return Type::Constructor;
     }
 }
 
