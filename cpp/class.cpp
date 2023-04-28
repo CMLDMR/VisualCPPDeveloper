@@ -180,7 +180,7 @@ QString Class::recursiveSourceFunc(const Member &member)
     }else if( member.getType() == CPP::Member::Type::Function ){
 
         CPP::Function::Function _function(member);
-        code += _function.getReturnType() + " " +getName()+"::"+_function.getDeclaration()+"(){\n\n";
+        code += _function.getReturnType() + " " +getName()+"::"+_function.getDeclaration()+"( " + _function.getParameter() +" ){\n\n";
         code += "\t"+_function.getDefination()+"\n";
         code += "}\n";
 

@@ -19,6 +19,8 @@ public:
     explicit Member();
     Member(const Type &type);
     Member(const Member &other);
+    Member(const QJsonObject &other);
+
     Member &setName( const QString &name );
     ///
     /// \brief setType class function attributes ...

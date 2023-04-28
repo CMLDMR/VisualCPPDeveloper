@@ -7,6 +7,8 @@
 #include <QObject>
 #include <QTextEdit>
 
+#include "cpp/function.h"
+
 class QVBoxLayout;
 class QPushButton;
 class QHBoxLayout;
@@ -44,16 +46,18 @@ public:
     void setReturnType( const QString &type = "void" );
     QString getReturnType() const;
 
+    CPP::Function::Function getFunction() const;
 
 private:
 
     QVBoxLayout* mMainLayout;
     QLineEdit* mFunctionNameLineEdit;
-    QTextEdit* mTextEdit;
+    QTextEdit* mDefinationTextEdit;
 
     QHBoxLayout* mDeclareLayout;
     QComboBox* mReturnTypeComboBox;
     QLineEdit* mDeclarationLineEdit;
+    QLineEdit* mParameterLineEdit;
 
     QHBoxLayout* mControllerLayout;
     QPushButton* mAcceptedBtn;

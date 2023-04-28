@@ -46,6 +46,11 @@ Member::Member(const Member &other)
     this->setJsonObject(other);
 }
 
+Member::Member(const QJsonObject &other)
+{
+    this->setJsonObject(other);
+}
+
 Member &Member::setName(const QString &name)
 {
     this->insert("name",name);

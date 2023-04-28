@@ -13,6 +13,8 @@ inline const QString name{"name"};
 inline const QString functionType{"functionType"}; // virtual or regular
 
 inline const QString returnType{"returnType"};
+inline const QString parameter{"parameter"};
+
 inline const QString declaration{"declaration"};
 
 inline const QString defination{"defination"};
@@ -32,9 +34,12 @@ public:
     void setFunctionType( const QString &functionType = "regular" );
     QString getFunctionType() const;
 
+    void setParameter( const QString &code );
+    QString getParameter() const;
 
     void setReturnType( const QString &code );
     QString getReturnType() const;
+
     void setDeclaration( const QString &code );
     QString getDeclaration() const;
 

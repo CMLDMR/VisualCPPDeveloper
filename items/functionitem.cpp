@@ -52,12 +52,7 @@ void Function::editFunction()
 
 
     if( mDialog->isAccepted() ){
-        mFunction->setDeclaration(mDialog->getCode());
-        mFunction->setDeclaration(mDialog->getDeclaration());
-        mFunction->setName(mDialog->getFunctionName());
-        mFunction->setFunctionType(mDialog->getFunctionType());
-        mFunction->setReturnType(mDialog->getReturnType());
-
+        *mFunction = mDialog->getFunction();
     }
     delete mDialog;
 }

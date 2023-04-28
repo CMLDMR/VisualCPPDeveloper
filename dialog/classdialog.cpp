@@ -81,12 +81,8 @@ ClassDialog::ClassDialog()
         if( mDialog->isAccepted() ){
 
             auto functionItem = new QStandardItem(mDialog->getFunctionName());
-            functionItem->setData(mDialog->getFunctionType(),Qt::UserRole+1);
-            functionItem->setData(mDialog->getDeclaration(),Qt::UserRole+2);
-            functionItem->setData(mDialog->getDefination(),Qt::UserRole+3);
-            functionItem->setData(mDialog->getReturnType(),Qt::UserRole+4);
+            functionItem->setData(mDialog->getFunction(),Qt::UserRole+1);
             mPrivateFunctionMembersModel->insertRow(0,functionItem);
-
 
         }
     });
@@ -108,11 +104,7 @@ QVector<CPP::Function::Function> ClassDialog::getPrivateFunctionMemberList() con
     QVector<CPP::Function::Function> list;
 
     for( int i = 0 ; i < mPrivateFunctionMembersModel->rowCount() ; i++ ){
-        CPP::Function::Function function(mPrivateFunctionMembersModel->item(i)->text());
-        function.setFunctionType(mPrivateFunctionMembersModel->item(i)->data(Qt::UserRole+1).toString());
-        function.setDeclaration(mPrivateFunctionMembersModel->item(i)->data(Qt::UserRole+2).toString());
-        function.setDefination(mPrivateFunctionMembersModel->item(i)->data(Qt::UserRole+3).toString());
-        function.setReturnType(mPrivateFunctionMembersModel->item(i)->data(Qt::UserRole+4).toString());
+        CPP::Function::Function function(mPrivateFunctionMembersModel->item(i)->data(Qt::UserRole+1).toJsonObject());
 
         list.push_back(function);
     }
