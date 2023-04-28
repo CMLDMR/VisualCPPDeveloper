@@ -41,6 +41,8 @@ public:
 private:
     Type mType;
 
+
+
 public:
     enum class Type{
         Constructor = 0,
@@ -52,6 +54,10 @@ public:
         NameSpace,
         File
     };
+
+    QString recursiveHeaderFunc(const Member &member );
+    QString recursiveSourceFunc(const Member &member );
+
 };
 
 } // namespace CPP

@@ -42,8 +42,7 @@ private:
     QJsonArray mProtected;
     QJsonArray mPrivate;
 
-    QString recursiveHeaderFunc(const Member &member );
-    QString recursiveSourceFunc(const Member &member );
+
 
 
 
