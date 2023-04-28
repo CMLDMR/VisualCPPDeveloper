@@ -1,12 +1,9 @@
 
 #include "mainwindow.h"
 #include "widget/graphicview.h"
-#include "widget/widget.h"
-#include "widget/vboxlayout.h"
 
 #include "scene/graphicscene.h"
 
-#include "items/classitem.h"
 
 
 #include <QLabel>
@@ -14,22 +11,27 @@
 #include <QMenu>
 #include <QAction>
 #include <QMenuBar>
+#include <QVBoxLayout>
 
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
 {
 
-    mMainWidget = new Widget::Widget();
+    mMainWidget = new QWidget();
     this->setCentralWidget(mMainWidget);
 
-    auto hLayout = mMainWidget->setMainLayout<Layout::VBoxLayout>();
+    mMainLayout = new QVBoxLayout();
+    mMainWidget->setLayout(mMainLayout);
 
-    mGraphicView = hLayout->addWidgetItem<Widget::GraphicView>();
+    mGraphicView = new Widget::GraphicView();
+
+    mMainLayout->addWidget(mGraphicView);
+
+
     mScene = mGraphicView->graphicScene();
 
 
-    QObject::connect(mGraphicView,&Widget::GraphicView::classAddClicked,this,&MainWindow::addClassAction);
 
 
     this->setMinimumHeight(450);
@@ -40,12 +42,5 @@ MainWindow::~MainWindow()
 {
 }
 
-void MainWindow::addClassAction()
-{
-    qDebug() << "AddAction";
-
-    mScene->addItem(new Items::Class());
-
-}
 
 

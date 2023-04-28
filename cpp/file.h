@@ -6,6 +6,7 @@
 
 #include <QFile>
 #include <QTextStream>
+#include <QVector>
 
 namespace CPP {
 
@@ -17,6 +18,40 @@ inline const QString className{"className"};
 
 
 
+
+class File
+{
+public:
+    File( const QString &fileName );
+
+    QString getFileName() const;
+
+
+    void addFunction( const CPP::Member &functionMember );
+
+
+    bool saveFile();
+
+private:
+    QString mFileName;
+    QFile mFile;
+    QVector<CPP::Member> mMemberList;
+    QString recursiveHeaderFunc(const Member &member );
+    QString recursiveSourceFunc(const Member &member );
+
+    bool saveHeader(const Member &member);
+    bool saveSource(const Member &member);
+
+
+};
+
+
+
+
+
+
+
+namespace legacy{
 class File : public CPP::Member
 {
 public:
@@ -26,12 +61,25 @@ public:
 
     QString getFileName() const;
 
+
+    void addFunction( const CPP::Member &functionMember );
+
+    File *header() const;
+
 private:
     QFile mFile;
 
     QString recursiveFunc(const Member &member );
 
+
+
+
+    File *mHeader;
+    File *mSource;
+
 };
+}
+
 }
 
 

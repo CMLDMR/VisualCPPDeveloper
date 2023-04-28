@@ -41,14 +41,12 @@ private:
 
     QVBoxLayout* mMainLayout;
 
-    Widget::Widget* mMainWidget;
+    QWidget* mMainWidget;
 
     QToolBar* mToolBar;
 
     QMenu *mAddMenu;
-    QAction* mClassAddAction;
-private slots:
-    void addClassAction();
+
 
 
 };
