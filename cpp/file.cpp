@@ -4,6 +4,8 @@
 #include "cpp/class.h"
 #include "cpp/function.h"
 #include "cpp/attribute.h"
+#include <QDir>
+#include <QJsonDocument>
 
 namespace CPP {
 
@@ -27,8 +29,6 @@ bool File::File::saveHeader(const Member &member)
 
 bool File::File::saveSource(const Member &member)
 {
-    bool saveSuccess = false;
-    // TODO: For Source
     QFile file(getFileName().toLower()+".cpp");
     if( file.open(QIODeviceBase::ReadWrite | QIODevice::Text ) ){
         QTextStream out(&file);
@@ -36,8 +36,10 @@ bool File::File::saveSource(const Member &member)
         QString code = this->recursiveSourceFunc(member);
         out << code;
         file.close();
+        return true;
+    }else{
+        return false;
     }
-    return saveSuccess;
 }
 
 File::File::File(const QString &fileName)
@@ -55,7 +57,7 @@ void File::File::addFunction(const Member &functionMember)
     mMemberList.append(functionMember);
 }
 
-bool File::File::saveFile()
+bool File::File::saveMembers()
 {
     for( const auto &member : mMemberList ){
         // for header
@@ -64,6 +66,50 @@ bool File::File::saveFile()
         }
     }
     return true;
+}
+
+bool File::File::saveFiles()
+{
+    QDir dir;
+    if( !dir.exists("codeBase") ){
+        dir.mkdir("codeBase");
+    }
+    QFile file("codeBase/"+getFileName().toLower()+".code");
+    if( file.open(QIODeviceBase::ReadWrite | QIODevice::Text ) ){
+        QTextStream out(&file);
+
+        out << static_cast<int>(mMemberList.size());
+        for( const auto &item : mMemberList ){
+            out << QJsonDocument(item).toJson();
+        }
+        file.close();
+        return true;
+    }else{
+        return false;
+    }
+}
+
+bool File::File::openFile(const QString &name)
+{
+    QFile file("codeBase/"+name);
+    if( file.open(QIODevice::ReadOnly) ){
+        QDataStream in(&file);
+        int sizeT;
+
+        in >> sizeT;
+
+        for( int i = 0 ; i < sizeT ; i++ ){
+            Member member;
+            in >> member;
+            if( member.getType() == Member::Type::Function ){
+                this->addFunction(member);
+            }
+        }
+        file.close();
+        return true;
+    }else{
+        return false;
+    }
 }
 
 QString File::File::recursiveHeaderFunc(const Member &member)
@@ -108,7 +154,7 @@ QString File::File::recursiveHeaderFunc(const Member &member)
     }else if( member.getType() == CPP::Member::Type::Function ){
         CPP::Function::Function _function(member);
         code += "\n";
-        code += _function.getReturnType() + " " +_function.getName() + "(" + _function.getParameter() + ");\n";
+        code += _function.getDeclaration()+";\n";
         code += "\n";
 
     }else if( member.getType() == CPP::Member::Type::Attribute ){
@@ -133,10 +179,10 @@ QString File::File::recursiveSourceFunc(const Member &member)
     }else if( member.getType() == CPP::Member::Type::Function ){
         CPP::Function::Function _function(member);
         code += "\n";
-        code += _function.getReturnType() + " " +_function.getName() + "(" + _function.getParameter() + ")\n";
+        code += _function.getDeclaration()+"\n";
         code += "{\n";
         code += "\n";
-        code += _function.getImplementation();
+        code += _function.getDefination();
         code += "\n";
         code += "\n";
         code += "}\n";
@@ -182,114 +228,6 @@ QString File::File::recursiveSourceFunc(const Member &member)
 
 
 
-
-
-
-namespace File{
-namespace legacy {
-
-File::File(const QString &fileName)
-    :CPP::Member(Member::Type::File)
-{
-    this->insert(Key::fileName,fileName);
-}
-
-void File::saveNameSpace(const Member &nameSpace)
-{
-    QFile file(getFileName().toLower()+".h");
-    if( file.open(QIODeviceBase::ReadWrite | QIODevice::Text ) ){
-        QTextStream out(&file);
-
-        out << "#ifndef " + getFileName().toUpper()+"_H\n";
-        out << "#define " + getFileName().toUpper()+"_H\n";
-
-        QString code = this->recursiveFunc(nameSpace);
-
-        out << code;
-
-
-
-        out << "#endif ";
-
-        file.close();
-    }
-}
-
-QString File::getFileName() const
-{
-    return this->value(Key::fileName).toString();
-}
-
-void File::addFunction(const Member &functionMember)
-{
-
-    this->insert("function",functionMember);
-
-    qDebug() << *this;
-
-
-
-}
-
-QString File::recursiveFunc(const Member &member)
-{
-    QString code;
-
-    if( member.getType() == CPP::Member::Type::NameSpace ){
-        CPP::NameSpace::NameSpace _nameSpace(member);
-        code += "namespace " + _nameSpace.getName() + " {\n";
-        auto list = _nameSpace.memberList();
-        for( const auto &_member : list ){
-            code += this->recursiveFunc(_member);
-        }
-        code += "}// end namespace " + _nameSpace.getName() +"\n\n";
-
-
-    }else if( member.getType() == CPP::Member::Type::Class ){
-        CPP::Class::Class _class(member);
-        code += "class "+_class.getName()+"\n";
-        code += "{\n";
-        code += "private:\n";
-        auto list = _class.privateMemberList();
-        for( const auto &_member : list ){
-            code += this->recursiveFunc(_member);
-        }
-        code += "\n";
-        code += "protected:\n";
-        list = _class.protectedMemberList();
-        for( const auto &_member : list ){
-            code += this->recursiveFunc(_member);
-        }
-        code += "\n";
-        code += "public:\n";
-        list = _class.publicMemberList();
-        for( const auto &_member : list ){
-            code += this->recursiveFunc(_member);
-        }
-        code += "\n";
-        code += "};// end class " + _class.getName() + "\n\n";
-
-
-    }else if( member.getType() == CPP::Member::Type::Function ){
-        CPP::Function::Function _function(member);
-        code += _function.getReturnType() + " " +_function.getName() + "();\n";
-
-
-    }else if( member.getType() == CPP::Member::Type::Attribute ){
-        CPP::Attribute::Attribute _attribute(member);
-        QString constStr = _attribute.getIsReadOnly() ? "const" : "";
-        QString initialValue = _attribute.getInitialValue().isEmpty() ? "" : _attribute.getInitialValue();
-        code += constStr + " " + _attribute.getType() + " " + _attribute.getName() +"{"+initialValue+"};\n";
-    }
-
-
-    return code;
-
-}
-
-}
-
-}
 
 
 

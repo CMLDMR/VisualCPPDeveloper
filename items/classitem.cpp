@@ -55,69 +55,6 @@ void Items::Class::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 
     if( selected == editAction ){
 
-
-        CPP::NameSpace::NameSpace nameSpace("HHHello");
-
-        CPP::NameSpace::NameSpace world("World");
-
-        nameSpace.appendMember(world);
-
-
-        CPP::Class::Class mClass("HelloWorld");
-        CPP::Function::Function consFunc("HelloWorld");
-        consFunc.setThisConstruction();
-        mClass.appendPublic(consFunc);
-
-        CPP::Function::Function desFunc("~HelloWorld");
-        desFunc.setThisDesConstruction();
-        desFunc.setFunctionType("virtual");
-        mClass.appendPublic(desFunc);
-
-
-        CPP::Function::Function print("printHello");
-        print.setReturnType("void");
-        print.setParameter("");
-        print.setReadOnly(true);
-        mClass.appendPublic(print);
-        mClass.appendPublic(print);
-
-
-        CPP::Attribute::Attribute atribute("AdSoyad");
-        atribute.setType("std::string");
-        atribute.setInitialValue("\"Test Yazı\"");
-        atribute.setReadOnly(true);
-        mClass.appendPublic(atribute);
-
-        atribute.setName("mMiktar");
-        atribute.setType("double");
-        atribute.setInitialValue("25");
-        atribute.setReadOnly(false);
-        mClass.appendPrivate(atribute);
-
-
-        nameSpace.appendMember(mClass);
-
-
-
-        CPP::File::legacy::File file("HelloWord");
-        file.saveNameSpace(nameSpace);
-
-
-//        CPP::File::File mainFunc("main");
-//        file.saveNameSpace(nameSpace);
-//        CPP::Function::Function print("printHello");
-//        print.setReturnType("void");
-//        print.setParameter("");
-//        print.setReadOnly(true);
-//        mClass.appendPublic(print);
-
-        qDebug() << nameSpace;
-
-
-
-
-
-
     }
 
     QGraphicsItem::mouseDoubleClickEvent(event);

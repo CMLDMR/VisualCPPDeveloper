@@ -17,12 +17,17 @@ Function::Function(const QString &functionName)
 
     mFunction = new CPP::Function::Function(functionName);
     mFunction->setFunctionType("regular");
-    mFunction->setReturnType("void");
-    mFunction->setParameter("int argc, char *argv[]");
-    mFunction->setReadOnly();
-    mFunction->setImplementation("std::cout << \"Hello World\";");
+    mFunction->setDeclaration("void main(int argc, char *argv[])");
+    mFunction->setDefination("std::cout << \"Hello World\";");
 
     mFile = new CPP::File::File(functionName);
+}
+
+Function::Function(const CPP::Function::Function &function)
+{
+    mFunction = new CPP::Function::Function(function);
+    mFile = new CPP::File::File(mFunction->getName());
+    setFlag(ItemIsMovable);
 }
 
 } // namespace Items
@@ -42,9 +47,7 @@ void Items::Function::paint(QPainter *painter, const QStyleOptionGraphicsItem *o
     painter->fillRect(rect,QBrush(QColor(200,170,170)));/* brush, brush style or color */
 //    painter->drawRect(rect);
     painter->drawText(0,0,"Function: " + mFunction->getName());
-    painter->drawText(0,20,"type: " + mFunction->getReturnType());
-    painter->drawText(0,40,"paramater: " + mFunction->getParameter());
-    painter->drawText(0,60,"Regular/Virtual: " + mFunction->getFunctionType());
+    painter->drawText(0,20,mFunction->getDeclaration());
 
     painter->setBackground(QBrush(QColor(200,170,170)));
 
@@ -58,9 +61,9 @@ void Items::Function::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 
 
         auto editAction = menu.addAction("Düzenle");
-        auto delAction = menu.addAction("Sil");
         menu.addSeparator();
         auto saveAction = menu.addAction("Save");
+        auto saveToFileAction = menu.addAction("Save To File");
 
         auto selected = menu.exec(event->screenPos());
 
@@ -68,18 +71,16 @@ void Items::Function::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 
             auto mDialog = new GeneratorDialog::FunctionDialog();
 
-            mDialog->setCode(mFunction->getImplementation());
-            mDialog->setParaMeterCode(mFunction->getParameter());
-            mDialog->setReturnTypeCode(mFunction->getReturnType());
+            mDialog->setCode(mFunction->getDefination());
             mDialog->setFunctionName(mFunction->getName());
+            mDialog->setDeclaration(mFunction->getDeclaration());
             mDialog->setFunctionType(mFunction->getFunctionType());
             mDialog->exec();
 
 
             if( mDialog->isAccepted() ){
-                mFunction->setImplementation(mDialog->getCode());
-                mFunction->setReturnType(mDialog->getReturnTypeCode());
-                mFunction->setParameter(mDialog->getParameterCode());
+                mFunction->setDeclaration(mDialog->getCode());
+                mFunction->setDeclaration(mDialog->getDeclaration());
                 mFunction->setName(mDialog->getFunctionName());
                 mFunction->setFunctionType(mDialog->getFunctionType());
             }
@@ -89,7 +90,11 @@ void Items::Function::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 
         if( selected == saveAction ){
             mFile->addFunction(*mFunction);
-            mFile->saveFile();
+            mFile->saveMembers();
+        }
+
+        if( selected == saveToFileAction ){
+            mFile->saveFiles();
         }
 
     }

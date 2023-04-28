@@ -11,11 +11,9 @@ namespace Function {
 namespace Key{
 inline const QString name{"name"};
 inline const QString functionType{"functionType"}; // virtual
-inline const QString returnType{"returnType"};
-inline const QString defaultParameter{"defaultParamter"};
-inline const QString methodType{"methodType"}; // void int std::string
-inline const QString isReadOnly{"isReadOnly"};
-inline const QString implementationCode{"implementation"};
+
+inline const QString declaration{"declaration"};
+inline const QString defination{"defination"};
 }
 
 class Function : public CPP::Member
@@ -31,24 +29,17 @@ public:
     void setThisConstruction();
     void setThisDesConstruction();
 
-    void setParameter( const QString &parameter );
-    QString getParameter() const;
-    void setReturnType( const QString &returnType );
+
     void setFunctionType( const QString &functionType = "regular" );
     QString getFunctionType() const;
-    void setReadOnly( const bool value = false );
-
-    void setImplementation( const QString &implementationCode );
-    QString getImplementation() const;
-
-    QString getReturnType() const;
 
 
-    enum class Type{
-        Construction = 0,
-        Destruction,
-        Normal
-    };
+    void setDeclaration( const QString &code );
+    QString getDeclaration() const;
+
+    void setDefination( const QString &code );
+    QString getDefination() const;
+
 };
 
 } // namespace Function
