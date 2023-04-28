@@ -114,82 +114,17 @@ QString Class::generateSourceCode()
     code += "\n";
     code += "\n";
 
-    auto list = privateMemberList();
-    for( const auto &_member : list ){
+    for( const auto &_member : privateMemberList() ){
+        code += this->recursiveSourceFunc(_member);
+    }
+
+    for( const auto &_member : publicMemberList() ){
         code += this->recursiveSourceFunc(_member);
     }
     code += "\n";
 
     return code;
 }
-
-//QString Class::recursiveHeaderFunc(const Member &member)
-//{
-//    QString code;
-
-//    if( member.getType() == CPP::Member::Type::NameSpace ){
-
-
-//    }else if( member.getType() == CPP::Member::Type::Class ){
-//        CPP::Class::Class _class(member);
-//        code += "class "+_class.getName()+"\n";
-//        code += "{\n";
-//        code += "\tprivate:\n";
-//        auto list = _class.privateMemberList();
-//        for( const auto &_member : list ){
-//            code +="\t"+ this->recursiveHeaderFunc(_member);
-//        }
-//        code += "\n";
-//        code += "\tprotected:\n";
-//        list = _class.protectedMemberList();
-//        for( const auto &_member : list ){
-//            code += "\t"+this->recursiveHeaderFunc(_member);
-//        }
-//        code += "\n";
-//        code += "public:\n";
-//        list = _class.publicMemberList();
-//        for( const auto &_member : list ){
-//            code += "\t"+this->recursiveHeaderFunc(_member);
-//        }
-//        code += "\n";
-//        code += "};// end class " + _class.getName() + "\n\n";
-
-
-//    }else if( member.getType() == CPP::Member::Type::Function ){
-
-//        CPP::Function::Function _function(member);
-//        code += _function.generateHeaderCode();
-
-//    }else if( member.getType() == CPP::Member::Type::Attribute ){
-
-//    }
-
-//    return code;
-//}
-
-//QString Class::recursiveSourceFunc(const Member &member)
-//{
-//    QString code;
-
-//    if( member.getType() == CPP::Member::Type::NameSpace ){
-
-
-//    }else if( member.getType() == CPP::Member::Type::Class ){
-
-
-//    }else if( member.getType() == CPP::Member::Type::Function ){
-
-//        CPP::Function::Function _function(member);
-//        code += _function.getReturnType() + " " +getName()+"::"+_function.getDeclaration()+"( " + _function.getParameter() +" ){\n\n";
-//        code += "\t"+_function.getDefination()+"\n";
-//        code += "}\n";
-
-//    }else if( member.getType() == CPP::Member::Type::Attribute ){
-
-//    }
-
-//    return code;
-//}
 
 
 
