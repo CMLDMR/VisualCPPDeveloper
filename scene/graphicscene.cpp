@@ -65,10 +65,8 @@ void Scene::GraphicScene::contextMenuEvent(QGraphicsSceneContextMenuEvent *event
         auto mDialog = new GeneratorDialog::FunctionDialog();
         mDialog->exec();
         if( mDialog->isAccepted() ){
-            CPP::Function::Function mFuction(mDialog->getFunctionName());
-            mFuction.setDeclaration(mDialog->getDeclaration());
-            mFuction.setDefination(mDialog->getDefination());
-            mFuction.setReturnType(mDialog->getReturnType());
+
+            CPP::Function::Function mFuction = mDialog->getFunction();
 
             this->addItem(new Items::Function(mFuction));
         }

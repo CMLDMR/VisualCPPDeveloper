@@ -42,6 +42,12 @@ FunctionDialog::FunctionDialog()
     mDeclarationLineEdit = new QLineEdit();
     mDeclarationLineEdit->setPlaceholderText("Declaration");
     mDeclareLayout->addWidget(mDeclarationLineEdit);
+
+    mParameterLineEdit = new QLineEdit();
+    mParameterLineEdit->setPlaceholderText("Parameter");
+    mDeclareLayout->addWidget(mParameterLineEdit);
+
+
     mMainLayout->addLayout(mDeclareLayout);
 
     QObject::connect(mFunctionNameLineEdit,&QLineEdit::textEdited,[=]( const QString &txt){
@@ -50,9 +56,9 @@ FunctionDialog::FunctionDialog()
     });
 
 
-    mTextEdit = new QTextEdit();
+    mDefinationTextEdit = new QTextEdit();
     mMainLayout->addWidget(new QLabel("Defination"));
-    mMainLayout->addWidget(mTextEdit);
+    mMainLayout->addWidget(mDefinationTextEdit);
 
 
     mControllerLayout = new QHBoxLayout();
@@ -82,12 +88,12 @@ bool FunctionDialog::isAccepted() const
 
 QString FunctionDialog::getCode() const
 {
-    return mTextEdit->toPlainText();
+    return mDefinationTextEdit->toPlainText();
 }
 
 void FunctionDialog::setCode(const QString &code)
 {
-    mTextEdit->setPlainText(code);
+    mDefinationTextEdit->setPlainText(code);
 }
 
 void FunctionDialog::setDeclaration(const QString &code)
@@ -102,12 +108,12 @@ QString FunctionDialog::getDeclaration() const
 
 void FunctionDialog::setDefination(const QString &code)
 {
-    mTextEdit->setText(code);
+    mDefinationTextEdit->setText(code);
 }
 
 QString FunctionDialog::getDefination() const
 {
-    return mTextEdit->toPlainText();
+    return mDefinationTextEdit->toPlainText();
 }
 
 void FunctionDialog::setFunctionName(const QString &functionName)
@@ -138,6 +144,17 @@ void FunctionDialog::setReturnType(const QString &type)
 QString FunctionDialog::getReturnType() const
 {
     return mReturnTypeComboBox->currentText();
+}
+
+CPP::Function::Function FunctionDialog::getFunction() const
+{
+
+    CPP::Function::Function function(mFunctionNameLineEdit->text());
+    function.setDefination(mDefinationTextEdit->toPlainText());
+    function.setReturnType(mReturnTypeComboBox->currentText());
+    function.setDeclaration(mDeclarationLineEdit->text());
+    function.setParameter(mParameterLineEdit->text());
+    return function;
 }
 
 
