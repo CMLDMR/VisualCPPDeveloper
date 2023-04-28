@@ -9,17 +9,36 @@
 
 namespace CPP {
 
+namespace File {
+void File::setIncludeFiles(const QString &newIncludeFiles)
+{
+    mIncludeFiles = newIncludeFiles;
+}
+
+QString File::includeFiles() const
+{
+    return mIncludeFiles;
+}
+
+}
+
+
 bool File::File::saveHeader(const Member &member)
 {
+    QDir dir;
+    if( !dir.exists("code") ){
+        dir.mkdir("code");
+    }
+
     // For Header
-    QFile file(getFileName().toLower()+".h");
+    QFile file("code/"+getFileName().toLower()+".h");
     if( file.open(QIODeviceBase::ReadWrite | QIODevice::Text ) ){
         QTextStream out(&file);
         out << "#ifndef " + getFileName().toUpper()+"_H\n";
         out << "#define " + getFileName().toUpper()+"_H\n";
 
         out << "\n";
-        out << member.getIncludeFiles();
+        out << mIncludeFiles+"\n";
         out << "\n";
         out << "\n";
 
@@ -36,7 +55,12 @@ bool File::File::saveHeader(const Member &member)
 
 bool File::File::saveSource(const Member &member)
 {
-    QFile file(getFileName().toLower()+".cpp");
+    QDir dir;
+    if( !dir.exists("code") ){
+        dir.mkdir("code");
+    }
+
+    QFile file("code/"+getFileName().toLower()+".cpp");
     if( file.open(QIODeviceBase::ReadWrite | QIODevice::Text ) ){
         QTextStream out(&file);
         out << "#include \"" + getFileName()+".h\"\n";
@@ -64,6 +88,11 @@ void File::File::addFunction(const Member &functionMember)
     mMemberList.append(functionMember);
 }
 
+void File::File::addMember(const Member &member)
+{
+    mMemberList.append(member);
+}
+
 bool File::File::saveMembers()
 {
     for( const auto &member : mMemberList ){
@@ -88,6 +117,7 @@ bool File::File::saveFiles()
         out << static_cast<int>(mMemberList.size());
         for( const auto &item : mMemberList ){
             out << QJsonDocument(item).toJson();
+            out << mIncludeFiles;
         }
         file.close();
         return true;
@@ -107,7 +137,9 @@ bool File::File::openFile(const QString &name)
 
         for( int i = 0 ; i < sizeT ; i++ ){
             Member member;
+            QString mIncludeFiles;
             in >> member;
+            in >> mIncludeFiles;
             if( member.getType() == Member::Type::Function ){
                 this->addFunction(member);
             }
@@ -135,31 +167,12 @@ QString File::File::recursiveHeaderFunc(const Member &member)
 
     }else if( member.getType() == CPP::Member::Type::Class ){
         CPP::Class::Class _class(member);
-        code += "class "+_class.getName()+"\n";
-        code += "{\n";
-        code += "private:\n";
-        auto list = _class.privateMemberList();
-        for( const auto &_member : list ){
-            code += this->recursiveHeaderFunc(_member);
-        }
-        code += "\n";
-        code += "protected:\n";
-        list = _class.protectedMemberList();
-        for( const auto &_member : list ){
-            code += this->recursiveHeaderFunc(_member);
-        }
-        code += "\n";
-        code += "public:\n";
-        list = _class.publicMemberList();
-        for( const auto &_member : list ){
-            code += this->recursiveHeaderFunc(_member);
-        }
-        code += "\n";
-        code += "};// end class " + _class.getName() + "\n\n";
-
+        code += _class.generateHeaderCode();
 
     }else if( member.getType() == CPP::Member::Type::Function ){
-        code += this->recurseFunctionHeader(member);
+
+        CPP::Function::Function _function(member);
+        code += _function.generateHeaderCode();
 
     }else if( member.getType() == CPP::Member::Type::Attribute ){
         CPP::Attribute::Attribute _attribute(member);
@@ -178,39 +191,26 @@ QString File::File::recursiveSourceFunc(const Member &member)
 
     switch (member.getType()) {
     case CPP::Member::Type::Function:
-        code += this->recurseFunctionSource(member);
+    {
+        CPP::Function::Function _function(member);
+        code += _function.generateSourceCode();
+    }
         break;
+
+    case CPP::Member::Type::Class:
+    {
+        CPP::Class::Class _class(member);
+        code += _class.generateSourceCode();
+    }
+    break;
     default:
         break;
     }
     return code;
 }
 
-QString File::File::recurseFunctionHeader(const Member &member)
-{
-    QString code;
-    CPP::Function::Function _function(member);
-    code += "\n";
-    code += _function.getDeclaration()+";\n";
-    code += "\n";
-    return code;
-}
 
-QString File::File::recurseFunctionSource(const Member &member)
-{
-    QString code;
-    CPP::Function::Function _function(member);
-    code += "\n";
-    code += _function.getDeclaration()+"\n";
-    code += "{\n";
-    code += "\n";
-    code += _function.getDefination();
-    code += "\n";
-    code += "\n";
-    code += "}\n";
-    code += "\n";
-    return code;
-}
+
 
 
 

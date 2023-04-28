@@ -31,9 +31,9 @@ signals:
 private:
     Scene::GraphicScene* mScene{nullptr};
 
-    // QWidget interface
-protected:
-    virtual void contextMenuEvent(QContextMenuEvent *event) override;
+//    // QWidget interface
+//protected:
+//    virtual void contextMenuEvent(QContextMenuEvent *event) override;
 
 
 

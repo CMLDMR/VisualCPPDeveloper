@@ -18,6 +18,11 @@ public:
     // QGraphicsScene interface
 protected:
     virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event) override;
+
+    // QGraphicsScene interface
+protected:
+    virtual void contextMenuEvent(QGraphicsSceneContextMenuEvent *event) override;
+
 };
 
 } // namespace Scene

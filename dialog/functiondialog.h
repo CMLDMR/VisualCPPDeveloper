@@ -41,16 +41,12 @@ public:
     void setFunctionType( const QString &type = "regular" );
     QString getFunctionType() const;
 
-    void setIncludeFile( const QString &includeFiles );
-    QString getIncludeFile();
 
 private:
 
     QVBoxLayout* mMainLayout;
     QLineEdit* mFunctionNameLineEdit;
     QTextEdit* mTextEdit;
-
-    QTextEdit* mTextEditIncludeFiles;
 
     QLineEdit* mDeclarationLineEdit;
 

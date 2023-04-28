@@ -74,6 +74,123 @@ QList<Member> Class::protectedMemberList() const
     return list;
 }
 
+QString Class::generateHeaderCode()
+{
+
+
+    QString code;
+
+    code += "class "+getName()+"\n";
+    code += "{\n";
+    code += "private:\n";
+    auto list = privateMemberList();
+    for( const auto &_member : list ){
+        code += this->recursiveHeaderFunc(_member);
+    }
+    code += "\n";
+    code += "protected:\n";
+    list = protectedMemberList();
+    for( const auto &_member : list ){
+        code += this->recursiveHeaderFunc(_member);
+    }
+    code += "\n";
+    code += "public:\n";
+    list = publicMemberList();
+    for( const auto &_member : list ){
+        code += this->recursiveHeaderFunc(_member);
+    }
+    code += "\n";
+    code += "};// end class " + getName() + "\n\n";
+
+    return code;
+
+}
+
+QString Class::generateSourceCode()
+{
+    QString code;
+
+    code += "#include \""+getName().toLower()+".h\"\n";
+    code += "\n";
+    code += "\n";
+
+    auto list = privateMemberList();
+    for( const auto &_member : list ){
+        code += this->recursiveSourceFunc(_member);
+    }
+    code += "\n";
+
+    return code;
+}
+
+QString Class::recursiveHeaderFunc(const Member &member)
+{
+    QString code;
+
+    if( member.getType() == CPP::Member::Type::NameSpace ){
+
+
+    }else if( member.getType() == CPP::Member::Type::Class ){
+        CPP::Class::Class _class(member);
+        code += "class "+_class.getName()+"\n";
+        code += "{\n";
+        code += "private:\n";
+        auto list = _class.privateMemberList();
+        for( const auto &_member : list ){
+            code += this->recursiveHeaderFunc(_member);
+        }
+        code += "\n";
+        code += "protected:\n";
+        list = _class.protectedMemberList();
+        for( const auto &_member : list ){
+            code += this->recursiveHeaderFunc(_member);
+        }
+        code += "\n";
+        code += "public:\n";
+        list = _class.publicMemberList();
+        for( const auto &_member : list ){
+            code += this->recursiveHeaderFunc(_member);
+        }
+        code += "\n";
+        code += "};// end class " + _class.getName() + "\n\n";
+
+
+    }else if( member.getType() == CPP::Member::Type::Function ){
+
+        CPP::Function::Function _function(member);
+        code += _function.generateHeaderCode();
+
+    }else if( member.getType() == CPP::Member::Type::Attribute ){
+
+    }
+
+    return code;
+}
+
+QString Class::recursiveSourceFunc(const Member &member)
+{
+    QString code;
+
+    if( member.getType() == CPP::Member::Type::NameSpace ){
+
+
+    }else if( member.getType() == CPP::Member::Type::Class ){
+
+
+    }else if( member.getType() == CPP::Member::Type::Function ){
+
+        CPP::Function::Function _function(member);
+        code += _function.getDeclaration()+"{\n\n";
+        code += _function.getDefination()+"\n";
+        code += "}\n";
+
+    }else if( member.getType() == CPP::Member::Type::Attribute ){
+
+    }
+
+    return code;
+}
+
 
 
 } // namespace Class

@@ -8,13 +8,17 @@
 #include <QPainter>
 #include <QBrush>
 
+#include "cpp/class.h"
+#include "cpp/file.h"
+
 namespace Items {
 
-class Class : public QObject, public QGraphicsItem
+class Class : public QGraphicsItem
 {
-    Q_OBJECT
+
 public:
-    Class();
+    Class(const QString &className);
+    Class(const CPP::Class::Class &className);
 
     // QGraphicsItem interface
 public:
@@ -26,7 +30,8 @@ protected:
     virtual void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event) override;
 
 private:
-    QBrush mBackGround;
+    CPP::Class::Class *mClass;
+    CPP::File::File *mFile;
 
 };
 
