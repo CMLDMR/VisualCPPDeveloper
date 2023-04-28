@@ -10,7 +10,7 @@ namespace CPP {
 namespace Function {
 namespace Key{
 inline const QString name{"name"};
-inline const QString functionType{"functionType"}; // virtual
+inline const QString functionType{"functionType"}; // virtual or regular
 
 inline const QString declaration{"declaration"};
 inline const QString defination{"defination"};
@@ -25,9 +25,6 @@ public:
     Function( const QString &functionName );
     Function( const Function &other );
     Function( const Member &other );
-
-    void setThisConstruction();
-    void setThisDesConstruction();
 
 
     void setFunctionType( const QString &functionType = "regular" );

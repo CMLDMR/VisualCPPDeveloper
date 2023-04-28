@@ -51,6 +51,7 @@ void Widget::GraphicView::contextMenuEvent(QContextMenuEvent *event)
             CPP::Function::Function mFuction(mDialog->getFunctionName());
             mFuction.setDeclaration(mDialog->getDeclaration());
             mFuction.setDefination(mDialog->getDefination());
+            mFuction.setIncludeFiles(mDialog->getIncludeFile());
             this->mScene->addItem(new Items::Function(mFuction));
         }
     });

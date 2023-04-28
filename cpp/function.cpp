@@ -21,17 +21,6 @@ Function::Function(const Member &other)
     this->setJsonObject(other);
 }
 
-void Function::setThisConstruction()
-{
-    this->insert(Key::functionType,"Construction");
-}
-
-void Function::setThisDesConstruction()
-{
-    this->insert(Key::functionType,"Destruction");
-}
-
-
 
 void Function::setFunctionType(const QString &functionType)
 {

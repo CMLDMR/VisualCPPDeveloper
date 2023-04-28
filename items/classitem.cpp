@@ -4,13 +4,11 @@
 #include <QGraphicsSceneContextMenuEvent>
 #include <QGraphicsSceneMouseEvent>
 
-#include "dialog/class.h"
 
 #include "cpp/class.h"
 #include "cpp/file.h"
 #include "cpp/namespace.h"
 #include "cpp/function.h"
-#include "cpp/attribute.h"
 
 namespace Items {
 

@@ -3,6 +3,9 @@
 #define CPP_CLASS_MEMBER_H
 
 #include <QJsonObject>
+#include <QJsonArray>
+#include <QJsonValue>
+#include <QJsonDocument>
 
 #include <QDebug>
 
@@ -26,6 +29,9 @@ public:
     void setJsonObject( const QJsonObject &obj );
 
     Member &operator=( const Member &other);
+
+    void setIncludeFiles( const QString &fileName );
+    QString getIncludeFiles() const;
 
 
 private:
