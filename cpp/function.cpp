@@ -8,8 +8,7 @@ Function::Function(const QString &functionName)
     :CPP::Member(CPP::Member::Type::Function)
 {
     this->setName(functionName);
-    this->insert(Key::functionType,"Normal");
-    this->setFunctionType(MethodType::Normal);
+    this->setFunctionType("Normal");
     this->setReadOnly();
 }
 
@@ -40,32 +39,40 @@ void Function::setParameter(const QString &parameter)
     this->insert(Key::defaultParameter,parameter);
 }
 
+QString Function::getParameter() const
+{
+    return this->value(Key::defaultParameter).toString();
+}
+
 void Function::setReturnType(const QString &returnType)
 {
     this->insert(Key::returnType,returnType);
 
 }
 
-void Function::setFunctionType(const MethodType &methodType)
+void Function::setFunctionType(const QString &functionType)
 {
-    switch (methodType) {
-    case MethodType::Normal:
-        this->insert(Key::methodType,"Normal");
-        break;
-    case MethodType::Virtual:
-        this->insert(Key::methodType,"Virtual");
-        break;
-    case MethodType::PureVirtual:
-        this->insert(Key::methodType,"PureVirtual");
-        break;
-    default:
-        break;
-    }
+    this->insert(Key::functionType,functionType);
+}
+
+QString Function::getFunctionType() const
+{
+    return this->value(Key::functionType).toString();
 }
 
 void Function::setReadOnly(const bool value)
 {
     this->insert(Key::isReadOnly,value);
+}
+
+void Function::setImplementation(const QString &implementationCode)
+{
+    this->insert(Key::implementationCode,implementationCode);
+}
+
+QString Function::getImplementation() const
+{
+    return this->value(Key::implementationCode).toString();
 }
 
 QString Function::getReturnType() const

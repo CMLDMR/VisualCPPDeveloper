@@ -5,6 +5,7 @@
 namespace CPP {
 namespace Class {
 
+
 Class::Class(const QString &className)
     :Member(Member::Type::Class)
 {

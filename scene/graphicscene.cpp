@@ -20,7 +20,7 @@ GraphicScene::GraphicScene(QObject *parent)
 void Scene::GraphicScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
 
-    qDebug() << event->pos().x() << event->pos().y() << event->scenePos();
+//    qDebug() << event->pos().x() << event->pos().y() << event->scenePos();
 
     QGraphicsScene::mouseMoveEvent(event);
 }

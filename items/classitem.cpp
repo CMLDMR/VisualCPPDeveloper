@@ -6,9 +6,7 @@
 
 #include "dialog/class.h"
 
-#include "generator/file.h"
-
-#include "cpp/class/class.h"
+#include "cpp/class.h"
 #include "cpp/file.h"
 #include "cpp/namespace.h"
 #include "cpp/function.h"
@@ -38,6 +36,8 @@ void Items::Class::paint(QPainter *painter, const QStyleOptionGraphicsItem *opti
 
     painter->setBackground(mBackGround);
     painter->drawRect(rect);
+    painter->drawText(0,0,"Class");
+
 }
 
 
@@ -56,7 +56,7 @@ void Items::Class::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
     if( selected == editAction ){
 
 
-        CPP::NameSpace::NameSpace nameSpace("Hello");
+        CPP::NameSpace::NameSpace nameSpace("HHHello");
 
         CPP::NameSpace::NameSpace world("World");
 
@@ -70,7 +70,7 @@ void Items::Class::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 
         CPP::Function::Function desFunc("~HelloWorld");
         desFunc.setThisDesConstruction();
-        desFunc.setFunctionType(CPP::Function::Function::MethodType::Virtual);
+        desFunc.setFunctionType("virtual");
         mClass.appendPublic(desFunc);
 
 
@@ -79,30 +79,37 @@ void Items::Class::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
         print.setParameter("");
         print.setReadOnly(true);
         mClass.appendPublic(print);
+        mClass.appendPublic(print);
 
 
         CPP::Attribute::Attribute atribute("AdSoyad");
         atribute.setType("std::string");
         atribute.setInitialValue("\"Test Yazı\"");
         atribute.setReadOnly(true);
-
-
         mClass.appendPublic(atribute);
 
         atribute.setName("mMiktar");
         atribute.setType("double");
         atribute.setInitialValue("25");
-            atribute.setReadOnly(false);
+        atribute.setReadOnly(false);
         mClass.appendPrivate(atribute);
 
 
         nameSpace.appendMember(mClass);
 
 
-        CPP::File::File file("HelloWord");
+
+        CPP::File::legacy::File file("HelloWord");
         file.saveNameSpace(nameSpace);
 
 
+//        CPP::File::File mainFunc("main");
+//        file.saveNameSpace(nameSpace);
+//        CPP::Function::Function print("printHello");
+//        print.setReturnType("void");
+//        print.setParameter("");
+//        print.setReadOnly(true);
+//        mClass.appendPublic(print);
 
         qDebug() << nameSpace;
 
