@@ -84,6 +84,7 @@ ClassDialog::ClassDialog()
             functionItem->setData(mDialog->getFunctionType(),Qt::UserRole+1);
             functionItem->setData(mDialog->getDeclaration(),Qt::UserRole+2);
             functionItem->setData(mDialog->getDefination(),Qt::UserRole+3);
+            functionItem->setData(mDialog->getReturnType(),Qt::UserRole+4);
             mPrivateFunctionMembersModel->insertRow(0,functionItem);
 
 
@@ -111,6 +112,8 @@ QVector<CPP::Function::Function> ClassDialog::getPrivateFunctionMemberList() con
         function.setFunctionType(mPrivateFunctionMembersModel->item(i)->data(Qt::UserRole+1).toString());
         function.setDeclaration(mPrivateFunctionMembersModel->item(i)->data(Qt::UserRole+2).toString());
         function.setDefination(mPrivateFunctionMembersModel->item(i)->data(Qt::UserRole+3).toString());
+        function.setReturnType(mPrivateFunctionMembersModel->item(i)->data(Qt::UserRole+4).toString());
+
         list.push_back(function);
     }
 

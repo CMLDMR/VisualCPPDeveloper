@@ -8,6 +8,7 @@
 
 
 #include "dialog/classdialog.h"
+#include "dialog/addincludedialog.h"
 
 namespace Items {
 
@@ -54,6 +55,8 @@ void Items::Class::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
     QMenu menu;
 
     auto editAction = menu.addAction("Düzenle");
+
+    //TODO: add include file
     auto addIncludeFileAction = menu.addAction("add Include");
 
     menu.addSeparator();
@@ -70,6 +73,17 @@ void Items::Class::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
                 mClass->appendPrivate(item);
             }
         }
+    }
+
+    if( selected == addIncludeFileAction ){
+        auto mDialog = new GeneratorDialog::AddIncludeDialog();
+        mDialog->setIncludeFiles(mFile->includeFiles());
+        mDialog->exec();
+        if( mDialog->isAccepted() ){
+            mFile->setIncludeFiles(mDialog->getIncludeFiles());
+        }
+        delete mDialog;
+
     }
 
     if( selected == saveAction ){

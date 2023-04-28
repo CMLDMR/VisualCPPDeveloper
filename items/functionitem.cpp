@@ -46,6 +46,8 @@ void Function::editFunction()
     mDialog->setFunctionName(mFunction->getName());
     mDialog->setDeclaration(mFunction->getDeclaration());
     mDialog->setFunctionType(mFunction->getFunctionType());
+    mDialog->setReturnType(mFunction->getReturnType());
+
     mDialog->exec();
 
 
@@ -54,6 +56,8 @@ void Function::editFunction()
         mFunction->setDeclaration(mDialog->getDeclaration());
         mFunction->setName(mDialog->getFunctionName());
         mFunction->setFunctionType(mDialog->getFunctionType());
+        mFunction->setReturnType(mDialog->getReturnType());
+
     }
     delete mDialog;
 }

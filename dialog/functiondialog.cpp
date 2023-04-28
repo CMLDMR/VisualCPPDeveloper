@@ -32,9 +32,22 @@ FunctionDialog::FunctionDialog()
     mFunctionType->addItem("destruction");
     mMainLayout->addWidget(mFunctionType);
 
+    mDeclareLayout = new QHBoxLayout();
+    mReturnTypeComboBox = new QComboBox();
+    mReturnTypeComboBox->addItem("void");
+    mReturnTypeComboBox->addItem("int");
+    mReturnTypeComboBox->addItem("double");
+    mDeclareLayout->addWidget(mReturnTypeComboBox);
+
     mDeclarationLineEdit = new QLineEdit();
     mDeclarationLineEdit->setPlaceholderText("Declaration");
-    mMainLayout->addWidget(mDeclarationLineEdit);
+    mDeclareLayout->addWidget(mDeclarationLineEdit);
+    mMainLayout->addLayout(mDeclareLayout);
+
+    QObject::connect(mFunctionNameLineEdit,&QLineEdit::textEdited,[=]( const QString &txt){
+        mDeclarationLineEdit->setText(txt);
+        mDeclarationLineEdit->setEnabled(false);
+    });
 
 
     mTextEdit = new QTextEdit();
@@ -115,6 +128,16 @@ void FunctionDialog::setFunctionType(const QString &type)
 QString FunctionDialog::getFunctionType() const
 {
     return mFunctionType->currentText();
+}
+
+void FunctionDialog::setReturnType(const QString &type)
+{
+    mReturnTypeComboBox->setCurrentText(type);
+}
+
+QString FunctionDialog::getReturnType() const
+{
+    return mReturnTypeComboBox->currentText();
 }
 
 
