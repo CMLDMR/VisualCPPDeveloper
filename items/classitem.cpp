@@ -72,6 +72,9 @@ void Items::Class::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
             for( const auto &item : mDialog->getPrivateFunctionMemberList() ){
                 mClass->appendPrivate(item);
             }
+            for( const auto &item : mDialog->getPublicFunctionMemberList() ){
+                mClass->appendPublic(item);
+            }
         }
     }
 

@@ -43,13 +43,26 @@ ClassDialog::ClassDialog()
     mPrivateMembersControllerLayout->addWidget(mAddPrivateFunctionMemberBtn);
     mMainLayout->addLayout(mPrivateMembersControllerLayout);
 
+    //TODO: implement Protected Members
     mMainLayout->addWidget(new QLabel("Protected Members"));
     //    mProtectedMembers = new QTextEdit();
     //    mMainLayout->addWidget(mProtectedMembers);
 
+
+
+
     mMainLayout->addWidget(new QLabel("Public Members"));
-    //    mPublicMembers = new QTextEdit();
-    //    mMainLayout->addWidget(mPublicMembers);
+    mPublicFunctionMembersModel = new QStandardItemModel();
+
+    mPublicMembersView = new QTableView();
+    mPublicMembersView->setModel(mPublicFunctionMembersModel);
+    mMainLayout->addWidget(mPublicMembersView);
+
+    mPublicMembersControllerLayout = new QHBoxLayout();
+    mAddPublicFunctionMemberBtn = new QPushButton("Add Public Function Member");
+    mPublicMembersControllerLayout->addWidget(mAddPublicFunctionMemberBtn);
+    mMainLayout->addLayout(mPublicMembersControllerLayout);
+
 
     mControllerLauout = new QHBoxLayout();
     mMainLayout->addLayout(mControllerLauout);
@@ -81,8 +94,27 @@ ClassDialog::ClassDialog()
         if( mDialog->isAccepted() ){
 
             auto functionItem = new QStandardItem(mDialog->getFunctionName());
-            functionItem->setData(mDialog->getFunction(),Qt::UserRole+1);
+            functionItem->setData(Function,Type);
+            functionItem->setData(PRIVATE,Area);
+            functionItem->setData(mDialog->getFunction(),Function);
             mPrivateFunctionMembersModel->insertRow(0,functionItem);
+
+        }
+    });
+
+    QObject::connect(mAddPublicFunctionMemberBtn,&QPushButton::clicked,[=](){
+
+        auto mDialog = new FunctionDialog();
+
+        mDialog->exec();
+
+        if( mDialog->isAccepted() ){
+
+            auto functionItem = new QStandardItem(mDialog->getFunctionName());
+            functionItem->setData(Function,Type);
+            functionItem->setData(PUBLIC,Area);
+            functionItem->setData(mDialog->getFunction(),Function);
+            mPublicFunctionMembersModel->insertRow(0,functionItem);
 
         }
     });
@@ -104,9 +136,30 @@ QVector<CPP::Function::Function> ClassDialog::getPrivateFunctionMemberList() con
     QVector<CPP::Function::Function> list;
 
     for( int i = 0 ; i < mPrivateFunctionMembersModel->rowCount() ; i++ ){
-        CPP::Function::Function function(mPrivateFunctionMembersModel->item(i)->data(Qt::UserRole+1).toJsonObject());
 
-        list.push_back(function);
+        auto dataIndex = mPrivateFunctionMembersModel->item(i);
+        if( dataIndex->data(Type).toInt() == Function && dataIndex->data(Area).toInt() == PRIVATE ){
+            CPP::Function::Function function_(mPrivateFunctionMembersModel->item(i)->data(Function).toJsonObject());
+            list.push_back(function_);
+        }
+
+    }
+
+    return list;
+}
+
+QVector<CPP::Function::Function> ClassDialog::getPublicFunctionMemberList() const
+{
+    QVector<CPP::Function::Function> list;
+
+    for( int i = 0 ; i < mPublicFunctionMembersModel->rowCount() ; i++ ){
+
+        auto dataIndex = mPublicFunctionMembersModel->item(i);
+        if( dataIndex->data(Type).toInt() == Function && dataIndex->data(Area).toInt() == PUBLIC ){
+            CPP::Function::Function function_(mPublicFunctionMembersModel->item(i)->data(Function).toJsonObject());
+            list.push_back(function_);
+        }
+
     }
 
     return list;

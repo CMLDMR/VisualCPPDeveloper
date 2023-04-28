@@ -26,8 +26,20 @@ class ClassDialog : public QDialog
 public:
     ClassDialog();
 
-    enum RoleType{
-        function
+    enum Role{
+        Type = Qt::UserRole+1,
+        Area,
+        Function,
+
+        lastRole = Qt::UserRole + 99
+    };
+
+
+
+    enum RoleArea{
+        PUBLIC = lastRole+1,
+        PROTECTED,
+        PRIVATE
     };
 
 
@@ -35,6 +47,7 @@ public:
 
     QString getClassName() const;
     QVector<CPP::Function::Function> getPrivateFunctionMemberList() const;
+    QVector<CPP::Function::Function> getPublicFunctionMemberList() const;
 
 private:
     QVBoxLayout* mMainLayout;
@@ -42,10 +55,16 @@ private:
     QLineEdit* mClassNameLineEdit;
 
 
+
     QStandardItemModel* mPrivateFunctionMembersModel;
     QTableView* mPrivateMembersView;
     QHBoxLayout* mPrivateMembersControllerLayout;
     QPushButton* mAddPrivateFunctionMemberBtn;
+
+    QStandardItemModel* mPublicFunctionMembersModel;
+    QTableView* mPublicMembersView;
+    QHBoxLayout* mPublicMembersControllerLayout;
+    QPushButton* mAddPublicFunctionMemberBtn;
 
 
 

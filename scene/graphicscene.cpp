@@ -55,7 +55,9 @@ void Scene::GraphicScene::contextMenuEvent(QGraphicsSceneContextMenuEvent *event
                 mClassItem->appendPrivate(item);
             }
 
-            qDebug() << "Class Code: "<<mClassItem->generateHeaderCode();
+            for( const auto &item : mDialog->getPublicFunctionMemberList() ){
+                mClassItem->appendPublic(item);
+            }
 
             this->addItem(new Items::Class(*mClassItem));
         }
