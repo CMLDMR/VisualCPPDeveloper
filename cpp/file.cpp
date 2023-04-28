@@ -17,8 +17,15 @@ bool File::File::saveHeader(const Member &member)
         QTextStream out(&file);
         out << "#ifndef " + getFileName().toUpper()+"_H\n";
         out << "#define " + getFileName().toUpper()+"_H\n";
+
+        out << "\n";
+        out << member.getIncludeFiles();
+        out << "\n";
+        out << "\n";
+
         QString code = this->recursiveHeaderFunc(member);
         out << code;
+        out << "\n";
         out << "#endif ";
         file.close();
         return true;
@@ -152,10 +159,7 @@ QString File::File::recursiveHeaderFunc(const Member &member)
 
 
     }else if( member.getType() == CPP::Member::Type::Function ){
-        CPP::Function::Function _function(member);
-        code += "\n";
-        code += _function.getDeclaration()+";\n";
-        code += "\n";
+        code += this->recurseFunctionHeader(member);
 
     }else if( member.getType() == CPP::Member::Type::Attribute ){
         CPP::Attribute::Attribute _attribute(member);
@@ -172,26 +176,39 @@ QString File::File::recursiveSourceFunc(const Member &member)
 
     QString code;
 
-    if( member.getType() == CPP::Member::Type::NameSpace ){
-
-    }else if( member.getType() == CPP::Member::Type::Class ){
-
-    }else if( member.getType() == CPP::Member::Type::Function ){
-        CPP::Function::Function _function(member);
-        code += "\n";
-        code += _function.getDeclaration()+"\n";
-        code += "{\n";
-        code += "\n";
-        code += _function.getDefination();
-        code += "\n";
-        code += "\n";
-        code += "}\n";
-        code += "\n";
-
-    }else if( member.getType() == CPP::Member::Type::Attribute ){
-
+    switch (member.getType()) {
+    case CPP::Member::Type::Function:
+        code += this->recurseFunctionSource(member);
+        break;
+    default:
+        break;
     }
+    return code;
+}
 
+QString File::File::recurseFunctionHeader(const Member &member)
+{
+    QString code;
+    CPP::Function::Function _function(member);
+    code += "\n";
+    code += _function.getDeclaration()+";\n";
+    code += "\n";
+    return code;
+}
+
+QString File::File::recurseFunctionSource(const Member &member)
+{
+    QString code;
+    CPP::Function::Function _function(member);
+    code += "\n";
+    code += _function.getDeclaration()+"\n";
+    code += "{\n";
+    code += "\n";
+    code += _function.getDefination();
+    code += "\n";
+    code += "\n";
+    code += "}\n";
+    code += "\n";
     return code;
 }
 

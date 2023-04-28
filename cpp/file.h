@@ -37,6 +37,9 @@ private:
     QString recursiveHeaderFunc(const Member &member );
     QString recursiveSourceFunc(const Member &member );
 
+    QString recurseFunctionHeader( const Member &member );
+    QString recurseFunctionSource( const Member &member );
+
     bool saveHeader(const Member &member);
     bool saveSource(const Member &member);
 };

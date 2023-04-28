@@ -75,6 +75,7 @@ void Items::Function::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
             mDialog->setFunctionName(mFunction->getName());
             mDialog->setDeclaration(mFunction->getDeclaration());
             mDialog->setFunctionType(mFunction->getFunctionType());
+            mDialog->setIncludeFile(mFunction->getIncludeFiles());
             mDialog->exec();
 
 
@@ -83,6 +84,7 @@ void Items::Function::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
                 mFunction->setDeclaration(mDialog->getDeclaration());
                 mFunction->setName(mDialog->getFunctionName());
                 mFunction->setFunctionType(mDialog->getFunctionType());
+                mFunction->setIncludeFiles(mDialog->getIncludeFile());
             }
             delete mDialog;
 
