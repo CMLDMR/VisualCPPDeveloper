@@ -109,15 +109,6 @@ Member &Member::operator=(const Member &other)
 }
 
 
-void Member::setIncludeFiles(const QString &fileName)
-{
-    this->insert("includeFiles",fileName);
-}
-
-QString Member::getIncludeFiles() const
-{
-    return this->value("includeFiles").toString();
-}
 
 
 } // namespace CPP

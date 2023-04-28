@@ -4,6 +4,7 @@
 #include "cpp/function.h"
 
 #include "dialog/functiondialog.h"
+#include "dialog/addincludedialog.h"
 
 #include <QPainter>
 #include <QMenu>
@@ -14,12 +15,7 @@ namespace Items {
 Function::Function(const QString &functionName)
 {
     setFlag(ItemIsMovable);
-
     mFunction = new CPP::Function::Function(functionName);
-    mFunction->setFunctionType("regular");
-    mFunction->setDeclaration("void main(int argc, char *argv[])");
-    mFunction->setDefination("std::cout << \"Hello World\";");
-
     mFile = new CPP::File::File(functionName);
 }
 
@@ -30,13 +26,45 @@ Function::Function(const CPP::Function::Function &function)
     setFlag(ItemIsMovable);
 }
 
+QRectF Function::addText(QPainter *painter, const QString &text)
+{
+
+    QRectF rect;
+    QRectF rect1;
+    painter->drawText(rect,0,text,&rect1);
+
+    return rect1;
+
+
+}
+
+void Function::editFunction()
+{
+    auto mDialog = new GeneratorDialog::FunctionDialog();
+
+    mDialog->setCode(mFunction->getDefination());
+    mDialog->setFunctionName(mFunction->getName());
+    mDialog->setDeclaration(mFunction->getDeclaration());
+    mDialog->setFunctionType(mFunction->getFunctionType());
+    mDialog->exec();
+
+
+    if( mDialog->isAccepted() ){
+        mFunction->setDeclaration(mDialog->getCode());
+        mFunction->setDeclaration(mDialog->getDeclaration());
+        mFunction->setName(mDialog->getFunctionName());
+        mFunction->setFunctionType(mDialog->getFunctionType());
+    }
+    delete mDialog;
+}
+
 } // namespace Items
 
 
 
 QRectF Items::Function::boundingRect() const
 {
-    return QRectF(-20,-20,300,100);
+    return QRectF(0,0,300,100);
 
 }
 
@@ -45,46 +73,44 @@ void Items::Function::paint(QPainter *painter, const QStyleOptionGraphicsItem *o
     QRectF rect = boundingRect();
 
     painter->fillRect(rect,QBrush(QColor(200,170,170)));/* brush, brush style or color */
-//    painter->drawRect(rect);
+    painter->drawRect(rect);
+
     painter->drawText(0,0,"Function: " + mFunction->getName());
     painter->drawText(0,20,mFunction->getDeclaration());
 
-    painter->setBackground(QBrush(QColor(200,170,170)));
-
 }
 
-void Items::Function::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
+
+
+
+void Items::Function::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 {
 
-    if( event->button() == Qt::MouseButton::RightButton ){
+    if( event->button() == Qt::MouseButton::LeftButton ){
+
+
         QMenu menu;
 
-
         auto editAction = menu.addAction("Düzenle");
-        menu.addSeparator();
-        auto saveAction = menu.addAction("Save");
-        auto saveToFileAction = menu.addAction("Save To File");
+        auto addIncludeFileAction = menu.addAction("add Include");
+
+                          menu.addSeparator();
+        auto saveAction = menu.addAction("Generate Code");
+        auto saveToFileAction = menu.addAction("Save");
 
         auto selected = menu.exec(event->screenPos());
 
+
         if( selected == editAction ){
+            this->editFunction();
+        }
 
-            auto mDialog = new GeneratorDialog::FunctionDialog();
-
-            mDialog->setCode(mFunction->getDefination());
-            mDialog->setFunctionName(mFunction->getName());
-            mDialog->setDeclaration(mFunction->getDeclaration());
-            mDialog->setFunctionType(mFunction->getFunctionType());
-            mDialog->setIncludeFile(mFunction->getIncludeFiles());
+        if( selected == addIncludeFileAction ){
+            auto mDialog = new GeneratorDialog::AddIncludeDialog();
+            mDialog->setIncludeFiles(mFile->includeFiles());
             mDialog->exec();
-
-
             if( mDialog->isAccepted() ){
-                mFunction->setDeclaration(mDialog->getCode());
-                mFunction->setDeclaration(mDialog->getDeclaration());
-                mFunction->setName(mDialog->getFunctionName());
-                mFunction->setFunctionType(mDialog->getFunctionType());
-                mFunction->setIncludeFiles(mDialog->getIncludeFile());
+                mFile->setIncludeFiles(mDialog->getIncludeFiles());
             }
             delete mDialog;
 
@@ -100,6 +126,4 @@ void Items::Function::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
         }
 
     }
-
-//    QGraphicsItem::mouseDoubleClickEvent(event);
 }

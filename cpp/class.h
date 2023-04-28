@@ -34,10 +34,17 @@ public:
     QList<Member> protectedMemberList() const;
 
 
+    QString generateHeaderCode();
+    QString generateSourceCode();
+
 private:
     QJsonArray mPublic;
     QJsonArray mProtected;
     QJsonArray mPrivate;
+
+    QString recursiveHeaderFunc(const Member &member );
+    QString recursiveSourceFunc(const Member &member );
+
 
 
 };

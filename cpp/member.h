@@ -20,6 +20,11 @@ public:
     Member(const Type &type);
     Member(const Member &other);
     Member &setName( const QString &name );
+    ///
+    /// \brief setType class function attributes ...
+    /// \param type
+    /// \return
+    ///
     Member &setType( const QString &type );
     Type getType() const;
 
@@ -29,9 +34,6 @@ public:
     void setJsonObject( const QJsonObject &obj );
 
     Member &operator=( const Member &other);
-
-    void setIncludeFiles( const QString &fileName );
-    QString getIncludeFiles() const;
 
 
 private:

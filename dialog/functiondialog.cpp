@@ -21,15 +21,8 @@ FunctionDialog::FunctionDialog()
 
     this->setLayout(mMainLayout);
 
-    mMainLayout->addWidget(new QLabel("includes file"));
-    mTextEditIncludeFiles = new QTextEdit();
-    mMainLayout->addWidget(mTextEditIncludeFiles);
-    mTextEditIncludeFiles->setPlaceholderText("#include <iostream>");
-    mTextEditIncludeFiles->setMaximumHeight(50);
-
-
-
     mFunctionNameLineEdit = new QLineEdit();
+    mFunctionNameLineEdit->setPlaceholderText("Function Name");
     mMainLayout->addWidget(mFunctionNameLineEdit);
 
     mFunctionType = new QComboBox();
@@ -124,15 +117,6 @@ QString FunctionDialog::getFunctionType() const
     return mFunctionType->currentText();
 }
 
-void FunctionDialog::setIncludeFile(const QString &includeFiles)
-{
-    mTextEditIncludeFiles->setText(includeFiles);
-}
-
-QString FunctionDialog::getIncludeFile()
-{
-    return mTextEditIncludeFiles->toPlainText();
-}
 
 
 } // namespace GeneratorDialog

@@ -5,17 +5,17 @@
 #include <QGraphicsItem>
 
 namespace CPP {
+
 class Member;
+
 namespace Function{
 class Function;
 }
 
 namespace File {
-namespace legacy{
 class File;
 }
-class File;
-}
+
 }
 
 
@@ -33,13 +33,18 @@ private:
     CPP::Function::Function* mFunction;
     CPP::File::File* mFile;
 
+    QRectF addText( QPainter* painter, const QString &text );
+
+    void editFunction();
+
     // QGraphicsItem interface
 public:
     virtual QRectF boundingRect() const override;
     virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) override;
 
+    // QGraphicsItem interface
 protected:
-    virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) override;
+    virtual void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event) override;
 };
 
 } // namespace Items

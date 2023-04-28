@@ -37,6 +37,9 @@ public:
     void setDefination( const QString &code );
     QString getDefination() const;
 
+    QString generateHeaderCode() const;
+    QString generateSourceCode() const;
+
 };
 
 } // namespace Function

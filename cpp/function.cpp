@@ -53,6 +53,30 @@ QString Function::getDefination() const
     return this->value(Key::defination).toString();
 }
 
+QString Function::generateHeaderCode() const
+{
+    QString code;
+    code += "\n";
+    code += this->getDeclaration()+";\n";
+    code += "\n";
+    return code;
+}
+
+QString Function::generateSourceCode() const
+{
+    QString code;
+    code += "\n";
+    code += this->getDeclaration()+"\n";
+    code += "{\n";
+    code += "\n";
+    code += this->getDefination();
+    code += "\n";
+    code += "\n";
+    code += "}\n";
+    code += "\n";
+    return code;
+}
+
 
 
 } // namespace Function
