@@ -13,6 +13,8 @@ namespace GeneratorDialog {
 FunctionDialog::FunctionDialog()
 {
 
+    this->setWindowTitle("Add Function");
+
     mIsAccepted = false;
 
     mMainLayout = new QVBoxLayout();

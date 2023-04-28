@@ -27,17 +27,14 @@ Class::Class()
 QRectF Items::Class::boundingRect() const
 {
     return QRectF(0,0,100,100);
-
 }
 
 void Items::Class::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
     QRectF rect = boundingRect();
-
     painter->setBackground(mBackGround);
     painter->drawRect(rect);
     painter->drawText(0,0,"Class");
-
 }
 
 
@@ -45,7 +42,6 @@ void Items::Class::paint(QPainter *painter, const QStyleOptionGraphicsItem *opti
 void Items::Class::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 {
     QMenu menu;
-
 
     auto editAction = menu.addAction("Düzenle");
 
