@@ -38,9 +38,11 @@ bool File::File::saveHeader(const Member &member)
         out << "#define " + getFileName().toUpper()+"_H\n";
 
         out << "\n";
-        out << mIncludeFiles+"\n";
-        out << "\n";
-        out << "\n";
+        if( !mIncludeFiles.isEmpty() ){
+            out << mIncludeFiles+"\n";
+            out << "\n";
+            out << "\n";
+        }
 
         QString code = this->recursiveHeaderFunc(member);
         out << code;

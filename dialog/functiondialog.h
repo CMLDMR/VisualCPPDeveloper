@@ -41,6 +41,9 @@ public:
     void setFunctionType( const QString &type = "regular" );
     QString getFunctionType() const;
 
+    void setReturnType( const QString &type = "void" );
+    QString getReturnType() const;
+
 
 private:
 
@@ -48,6 +51,8 @@ private:
     QLineEdit* mFunctionNameLineEdit;
     QTextEdit* mTextEdit;
 
+    QHBoxLayout* mDeclareLayout;
+    QComboBox* mReturnTypeComboBox;
     QLineEdit* mDeclarationLineEdit;
 
     QHBoxLayout* mControllerLayout;

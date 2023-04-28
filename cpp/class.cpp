@@ -134,22 +134,22 @@ QString Class::recursiveHeaderFunc(const Member &member)
         CPP::Class::Class _class(member);
         code += "class "+_class.getName()+"\n";
         code += "{\n";
-        code += "private:\n";
+        code += "\tprivate:\n";
         auto list = _class.privateMemberList();
         for( const auto &_member : list ){
-            code += this->recursiveHeaderFunc(_member);
+            code +="\t"+ this->recursiveHeaderFunc(_member);
         }
         code += "\n";
-        code += "protected:\n";
+        code += "\tprotected:\n";
         list = _class.protectedMemberList();
         for( const auto &_member : list ){
-            code += this->recursiveHeaderFunc(_member);
+            code += "\t"+this->recursiveHeaderFunc(_member);
         }
         code += "\n";
         code += "public:\n";
         list = _class.publicMemberList();
         for( const auto &_member : list ){
-            code += this->recursiveHeaderFunc(_member);
+            code += "\t"+this->recursiveHeaderFunc(_member);
         }
         code += "\n";
         code += "};// end class " + _class.getName() + "\n\n";
@@ -180,8 +180,8 @@ QString Class::recursiveSourceFunc(const Member &member)
     }else if( member.getType() == CPP::Member::Type::Function ){
 
         CPP::Function::Function _function(member);
-        code += _function.getDeclaration()+"{\n\n";
-        code += _function.getDefination()+"\n";
+        code += _function.getReturnType() + " " +getName()+"::"+_function.getDeclaration()+"(){\n\n";
+        code += "\t"+_function.getDefination()+"\n";
         code += "}\n";
 
     }else if( member.getType() == CPP::Member::Type::Attribute ){

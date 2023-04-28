@@ -32,6 +32,16 @@ QString Function::getFunctionType() const
     return this->value(Key::functionType).toString();
 }
 
+void Function::setReturnType(const QString &code)
+{
+    this->insert(Key::returnType,code);
+}
+
+QString Function::getReturnType() const
+{
+    return this->value(Key::returnType).toString();
+}
+
 
 void Function::setDeclaration(const QString &code)
 {
@@ -57,7 +67,7 @@ QString Function::generateHeaderCode() const
 {
     QString code;
     code += "\n";
-    code += this->getDeclaration()+";\n";
+    code += this->getReturnType() + " " +this->getDeclaration()+"();\n";
     code += "\n";
     return code;
 }
@@ -66,7 +76,7 @@ QString Function::generateSourceCode() const
 {
     QString code;
     code += "\n";
-    code += this->getDeclaration()+"\n";
+    code += this->getReturnType() + " " +this->getDeclaration()+"()\n";
     code += "{\n";
     code += "\n";
     code += this->getDefination();

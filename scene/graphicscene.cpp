@@ -68,6 +68,8 @@ void Scene::GraphicScene::contextMenuEvent(QGraphicsSceneContextMenuEvent *event
             CPP::Function::Function mFuction(mDialog->getFunctionName());
             mFuction.setDeclaration(mDialog->getDeclaration());
             mFuction.setDefination(mDialog->getDefination());
+            mFuction.setReturnType(mDialog->getReturnType());
+
             this->addItem(new Items::Function(mFuction));
         }
     });
