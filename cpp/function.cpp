@@ -9,7 +9,6 @@ Function::Function(const QString &functionName)
 {
     this->setName(functionName);
     this->setFunctionType("Normal");
-    this->setReadOnly();
 }
 
 Function::Function(const Function &other)
@@ -25,30 +24,14 @@ Function::Function(const Member &other)
 void Function::setThisConstruction()
 {
     this->insert(Key::functionType,"Construction");
-    setReturnType("");
 }
 
 void Function::setThisDesConstruction()
 {
     this->insert(Key::functionType,"Destruction");
-    setReturnType("");
 }
 
-void Function::setParameter(const QString &parameter)
-{
-    this->insert(Key::defaultParameter,parameter);
-}
 
-QString Function::getParameter() const
-{
-    return this->value(Key::defaultParameter).toString();
-}
-
-void Function::setReturnType(const QString &returnType)
-{
-    this->insert(Key::returnType,returnType);
-
-}
 
 void Function::setFunctionType(const QString &functionType)
 {
@@ -60,25 +43,28 @@ QString Function::getFunctionType() const
     return this->value(Key::functionType).toString();
 }
 
-void Function::setReadOnly(const bool value)
+
+void Function::setDeclaration(const QString &code)
 {
-    this->insert(Key::isReadOnly,value);
+    this->insert(Key::declaration,code);
 }
 
-void Function::setImplementation(const QString &implementationCode)
+QString Function::getDeclaration() const
 {
-    this->insert(Key::implementationCode,implementationCode);
+    return this->value(Key::declaration).toString();
 }
 
-QString Function::getImplementation() const
+void Function::setDefination(const QString &code)
 {
-    return this->value(Key::implementationCode).toString();
+    this->insert(Key::defination,code);
 }
 
-QString Function::getReturnType() const
+QString Function::getDefination() const
 {
-    return this->value(Key::returnType).toString();
+    return this->value(Key::defination).toString();
 }
+
+
 
 } // namespace Function
 } // namespace CPP

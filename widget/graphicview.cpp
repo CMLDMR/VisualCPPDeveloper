@@ -1,9 +1,9 @@
 
 #include "graphicview.h"
+#include "cpp/function.h"
 #include "scene/graphicscene.h"
-#include "items/classitem.h"
 #include "items/functionitem.h"
-
+#include "dialog/functiondialog.h"
 
 #include <QMenu>
 #include <QContextMenuEvent>
@@ -38,30 +38,23 @@ Scene::GraphicScene *GraphicView::graphicScene()
 void Widget::GraphicView::contextMenuEvent(QContextMenuEvent *event)
 {
 
-    qDebug() << "Selected Size: " << mScene->selectedItems().size();
-
     if( mScene->selectedItems().size() ){
         return;
     }
 
     QMenu menu(this);
 
-//    menu.addAction("Class Ekle",[=](){
-//        this->mScene->addItem(new Items::Class());
-//    });
-
     menu.addAction("add Function",[=](){
-
-
-
-
-        this->mScene->addItem(new Items::Function("main"));
+        auto mDialog = new GeneratorDialog::FunctionDialog();
+        mDialog->exec();
+        if( mDialog->isAccepted() ){
+            CPP::Function::Function mFuction(mDialog->getFunctionName());
+            mFuction.setDeclaration(mDialog->getDeclaration());
+            mFuction.setDefination(mDialog->getDefination());
+            this->mScene->addItem(new Items::Function(mFuction));
+        }
     });
-
     menu.addAction("Kapat");
-
     menu.exec(event->globalPos());
-
-//    QGraphicsView::contextMenuEvent(event);
 
 }

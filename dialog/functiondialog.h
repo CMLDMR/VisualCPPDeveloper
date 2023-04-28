@@ -29,10 +29,11 @@ public:
     QString getCode() const;
     void setCode( const QString &code );
 
-    void setReturnTypeCode( const QString &code );
-    QString getReturnTypeCode() const;
-    void setParaMeterCode( const QString &code );
-    QString getParameterCode() const;
+    void setDeclaration( const QString &code );
+    QString getDeclaration() const;
+
+    void setDefination( const QString &code );
+    QString getDefination() const;
 
     void setFunctionName( const QString &functionName );
     QString getFunctionName() const;
@@ -46,8 +47,7 @@ private:
     QLineEdit* mFunctionNameLineEdit;
     QTextEdit* mTextEdit;
 
-    QLineEdit* mReturnTypeLineEdit;
-    QLineEdit* mParametersLineEdit;
+    QLineEdit* mDeclarationLineEdit;
 
     QHBoxLayout* mControllerLayout;
     QPushButton* mAcceptedBtn;

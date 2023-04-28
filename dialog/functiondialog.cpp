@@ -28,19 +28,17 @@ FunctionDialog::FunctionDialog()
     mFunctionType = new QComboBox();
     mFunctionType->addItem("regular");
     mFunctionType->addItem("virtual");
+    mFunctionType->addItem("construction");
+    mFunctionType->addItem("destruction");
     mMainLayout->addWidget(mFunctionType);
 
-    mReturnTypeLineEdit = new QLineEdit();
-    mReturnTypeLineEdit->setPlaceholderText("Return Type");
-
-    mParametersLineEdit = new QLineEdit();
-    mParametersLineEdit->setPlaceholderText("Function Parameters");
-    mMainLayout->addWidget(mReturnTypeLineEdit);
-    mMainLayout->addWidget(mParametersLineEdit);
+    mDeclarationLineEdit = new QLineEdit();
+    mDeclarationLineEdit->setPlaceholderText("Declaration");
+    mMainLayout->addWidget(mDeclarationLineEdit);
 
 
     mTextEdit = new QTextEdit();
-    mMainLayout->addWidget(new QLabel("Implementation"));
+    mMainLayout->addWidget(new QLabel("Defination"));
     mMainLayout->addWidget(mTextEdit);
 
 
@@ -79,14 +77,24 @@ void FunctionDialog::setCode(const QString &code)
     mTextEdit->setPlainText(code);
 }
 
-void FunctionDialog::setParaMeterCode(const QString &code)
+void FunctionDialog::setDeclaration(const QString &code)
 {
-    mParametersLineEdit->setText(code);
+    mDeclarationLineEdit->setText(code);
 }
 
-QString FunctionDialog::getParameterCode() const
+QString FunctionDialog::getDeclaration() const
 {
-    return mParametersLineEdit->text();
+    return mDeclarationLineEdit->text();
+}
+
+void FunctionDialog::setDefination(const QString &code)
+{
+    mTextEdit->setText(code);
+}
+
+QString FunctionDialog::getDefination() const
+{
+    return mTextEdit->toPlainText();
 }
 
 void FunctionDialog::setFunctionName(const QString &functionName)
@@ -109,15 +117,6 @@ QString FunctionDialog::getFunctionType() const
     return mFunctionType->currentText();
 }
 
-void FunctionDialog::setReturnTypeCode(const QString &code)
-{
-    mReturnTypeLineEdit->setText(code);
-}
-
-QString FunctionDialog::getReturnTypeCode() const
-{
-    return mReturnTypeLineEdit->text();
-}
 
 } // namespace GeneratorDialog
 

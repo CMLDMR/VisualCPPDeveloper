@@ -25,7 +25,7 @@ class Function : public QGraphicsItem
 {
 public:
     Function(const QString &functionName);
-
+    Function(const CPP::Function::Function &function);
 
 
 private:

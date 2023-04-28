@@ -17,8 +17,6 @@ inline const QString className{"className"};
 }
 
 
-
-
 class File
 {
 public:
@@ -26,11 +24,11 @@ public:
 
     QString getFileName() const;
 
-
     void addFunction( const CPP::Member &functionMember );
 
-
-    bool saveFile();
+    bool saveMembers();
+    bool saveFiles();
+    bool openFile( const QString &name );
 
 private:
     QString mFileName;
@@ -41,45 +39,7 @@ private:
 
     bool saveHeader(const Member &member);
     bool saveSource(const Member &member);
-
-
 };
-
-
-
-
-
-
-
-namespace legacy{
-class File : public CPP::Member
-{
-public:
-    File( const QString &fileName );
-
-    void saveNameSpace(const CPP::Member &nameSpace);
-
-    QString getFileName() const;
-
-
-    void addFunction( const CPP::Member &functionMember );
-
-    File *header() const;
-
-private:
-    QFile mFile;
-
-    QString recursiveFunc(const Member &member );
-
-
-
-
-    File *mHeader;
-    File *mSource;
-
-};
-}
-
 }
 
 
