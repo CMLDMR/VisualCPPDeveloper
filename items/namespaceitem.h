@@ -8,7 +8,9 @@
 #include "cpp/file.h"
 #include "cpp/function.h"
 #include "cpp/namespace.h"
+#include <QBrush>
 
+#include <QColor>
 
 namespace Items {
 
@@ -23,6 +25,26 @@ private:
     CPP::NameSpace::NameSpace* mNameSpace;
     CPP::File::File* mFile;
 
+    bool mPressed{false};
+
+    enum class BUTTONSTATE{
+        ENTER,
+        LEAVE,
+
+        RIGHTPRESSED,
+        RIGHTRELEASE,
+        LEFTPRESSED,
+        LEFTRELEASED,
+
+        IDLE
+    };
+
+    BUTTONSTATE mState{BUTTONSTATE::IDLE};
+
+    QPointF mCLickedPoint;
+
+    QRectF mAddFunctionMemberRect{0,0,80,20};
+
     // QGraphicsItem interface
 public:
     virtual QRectF boundingRect() const override;
@@ -31,6 +53,17 @@ public:
     // QGraphicsItem interface
 protected:
     virtual void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event) override;
+
+    // QGraphicsItem interface
+protected:
+    virtual void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
+    virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) override;
+
+    // QGraphicsItem interface
+protected:
+    virtual void hoverEnterEvent(QGraphicsSceneHoverEvent *event) override;
+    virtual void hoverMoveEvent(QGraphicsSceneHoverEvent *event) override;
+    virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent *event) override;
 };
 
 } // namespace Items
