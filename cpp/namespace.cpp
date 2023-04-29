@@ -8,7 +8,6 @@ NameSpace::NameSpace(const QString &nameSpaceName)
     :CPP::Member(Member::Type::NameSpace)
 {
     this->insert(Key::name,nameSpaceName);
-    this->insert(Key::elements,mArray);
 }
 
 NameSpace::NameSpace(const NameSpace &other)
@@ -23,8 +22,9 @@ NameSpace::NameSpace(const Member &other)
 
 void NameSpace::appendMember(const Member &member)
 {
-    mArray.append(member);
-    this->insert(Key::elements,mArray);
+    auto array = this->value(Key::elements).toArray();
+    array.append(member);
+    this->insert(Key::elements,array);
 }
 
 QList<Member> NameSpace::memberList() const
@@ -37,6 +37,32 @@ QList<Member> NameSpace::memberList() const
         list.append(obj);
     }
     return list;
+}
+
+QString NameSpace::generateHeaderCode() {
+    QString code;
+    code += "namespace " + getName() + " {\n";
+    auto list = memberList();
+    for( const auto &_member : list ){
+        code += recursiveHeaderFunc(_member);
+    }
+    code +="\n";
+    code +="\n";
+    code += "}// end namespace " + getName() +"\n\n";
+    return code;
+}
+
+QString NameSpace::generateSourceCode()
+{
+    QString code;
+    code += "\n";
+    for( const auto &item : memberList() ){
+        code += this->recursiveSourceFunc(item);
+    }
+    code += "\n";
+    code += "}\n";
+    code += "\n";
+    return code;
 }
 
 } // namespace NameSpace

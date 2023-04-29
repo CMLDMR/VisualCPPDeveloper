@@ -6,9 +6,11 @@
 
 #include "dialog/functiondialog.h"
 #include "dialog/classdialog.h"
+#include "dialog/namespacedialog.h"
 
 #include "items/functionitem.h"
 #include "items/classitem.h"
+#include "items/namespaceitem.h"
 
 #include "cpp/function.h"
 #include "cpp/class.h"
@@ -73,6 +75,18 @@ void Scene::GraphicScene::contextMenuEvent(QGraphicsSceneContextMenuEvent *event
             this->addItem(new Items::Function(mFuction));
         }
     });
+
+    menu.addAction("add namespace",[=](){
+
+        auto mDialog = new GeneratorDialog::NameSpaceDialog();
+        mDialog->exec();
+        if( mDialog->isAccepted() ){
+            CPP::NameSpace::NameSpace* mNameSpaceItem = new CPP::NameSpace::NameSpace(mDialog->getNameSpace());
+
+            this->addItem(new Items::NamespaceItem(*mNameSpaceItem));
+        }
+    });
+
     menu.addAction("Close");
     menu.exec(event->screenPos());
 }
