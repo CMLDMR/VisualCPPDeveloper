@@ -73,7 +73,7 @@ void Scene::GraphicScene::contextMenuEvent(QGraphicsSceneContextMenuEvent *event
             this->addItem(new Items::Function(mFuction));
         }
     });
-    menu.addAction("Kapat");
+    menu.addAction("Close");
     menu.exec(event->screenPos());
 }
 
