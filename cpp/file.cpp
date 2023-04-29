@@ -164,6 +164,8 @@ QString File::File::recursiveHeaderFunc(const Member &member)
         for( const auto &_member : list ){
             code += this->recursiveHeaderFunc(_member);
         }
+        code +="\n";
+        code +="\n";
         code += "}// end namespace " + _nameSpace.getName() +"\n\n";
 
 
@@ -203,6 +205,12 @@ QString File::File::recursiveSourceFunc(const Member &member)
     {
         CPP::Class::Class _class(member);
         code += _class.generateSourceCode();
+    }
+
+    case CPP::Member::Type::NameSpace:
+    {
+        CPP::NameSpace::NameSpace _namespace(member);
+        code += _namespace.generateSourceCode();
     }
     break;
     default:

@@ -27,8 +27,10 @@ public:
 
     QList<Member> memberList() const;
 
+    QString generateHeaderCode() ;
+    QString generateSourceCode() ;
+
 private:
-    QJsonArray mArray;
 };
 
 } // namespace NameSpace
