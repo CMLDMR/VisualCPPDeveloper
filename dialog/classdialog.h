@@ -55,16 +55,25 @@ private:
     QLineEdit* mClassNameLineEdit;
 
 
+    QHBoxLayout* mHLayout;
 
+    QWidget* mPrivateWidget;
+    QVBoxLayout* mPrivateVLayout;
     QStandardItemModel* mPrivateFunctionMembersModel;
     QTableView* mPrivateMembersView;
     QHBoxLayout* mPrivateMembersControllerLayout;
     QPushButton* mAddPrivateFunctionMemberBtn;
+    QPushButton* mAddPrivateAttributeMemberBtn;
 
+
+    QWidget* mPublicWidget;
+    QVBoxLayout* mPublicVLayout;
     QStandardItemModel* mPublicFunctionMembersModel;
     QTableView* mPublicMembersView;
     QHBoxLayout* mPublicMembersControllerLayout;
     QPushButton* mAddPublicFunctionMemberBtn;
+    QPushButton* mAddPublicAttributeMemberBtn;
+
 
 
 

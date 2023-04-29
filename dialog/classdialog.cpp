@@ -31,17 +31,32 @@ ClassDialog::ClassDialog()
     mClassNameLineEdit->setPlaceholderText("Type Class Name");
     mMainLayout->addWidget(mClassNameLineEdit);
 
-    mMainLayout->addWidget(new QLabel("Private Members"));
+
+    mHLayout = new QHBoxLayout();
+    mMainLayout->addLayout(mHLayout);
+
+    mPrivateWidget = new QWidget();
+    mHLayout->addWidget(mPrivateWidget);
+
+    mPrivateVLayout = new QVBoxLayout();
+    mPrivateWidget->setLayout(mPrivateVLayout);
+
+    mPrivateVLayout->addWidget(new QLabel("Private Members"));
     mPrivateFunctionMembersModel = new QStandardItemModel();
 
     mPrivateMembersView = new QTableView();
     mPrivateMembersView->setModel(mPrivateFunctionMembersModel);
-    mMainLayout->addWidget(mPrivateMembersView);
+    mPrivateVLayout->addWidget(mPrivateMembersView);
 
     mPrivateMembersControllerLayout = new QHBoxLayout();
-    mAddPrivateFunctionMemberBtn = new QPushButton("Add Private Function Member");
+    mAddPrivateFunctionMemberBtn = new QPushButton("Add Function");
     mPrivateMembersControllerLayout->addWidget(mAddPrivateFunctionMemberBtn);
-    mMainLayout->addLayout(mPrivateMembersControllerLayout);
+    mAddPrivateAttributeMemberBtn = new QPushButton("Add Member");
+    mPrivateMembersControllerLayout->addWidget(mAddPrivateAttributeMemberBtn );
+    mPrivateVLayout->addLayout(mPrivateMembersControllerLayout);
+
+
+
 
     //TODO: implement Protected Members
     mMainLayout->addWidget(new QLabel("Protected Members"));
@@ -50,18 +65,28 @@ ClassDialog::ClassDialog()
 
 
 
+    mPublicWidget = new QWidget();
+    mPublicVLayout = new QVBoxLayout();
+    mPublicWidget->setLayout(mPublicVLayout);
+    mHLayout->addWidget(mPublicWidget);
 
-    mMainLayout->addWidget(new QLabel("Public Members"));
+    mPublicVLayout->addWidget(new QLabel("Public Members"));
     mPublicFunctionMembersModel = new QStandardItemModel();
 
     mPublicMembersView = new QTableView();
     mPublicMembersView->setModel(mPublicFunctionMembersModel);
-    mMainLayout->addWidget(mPublicMembersView);
+    mPublicVLayout->addWidget(mPublicMembersView);
 
     mPublicMembersControllerLayout = new QHBoxLayout();
-    mAddPublicFunctionMemberBtn = new QPushButton("Add Public Function Member");
+    mAddPublicFunctionMemberBtn = new QPushButton("Add Function");
     mPublicMembersControllerLayout->addWidget(mAddPublicFunctionMemberBtn);
-    mMainLayout->addLayout(mPublicMembersControllerLayout);
+    mAddPublicAttributeMemberBtn = new QPushButton("Add Member");
+    mPublicMembersControllerLayout->addWidget(mAddPublicAttributeMemberBtn);
+    mPublicVLayout->addLayout(mPublicMembersControllerLayout);
+
+
+
+
 
 
     mControllerLauout = new QHBoxLayout();
@@ -72,6 +97,10 @@ ClassDialog::ClassDialog()
 
     mRejectBtn = new QPushButton("Cancel");
     mControllerLauout->addWidget(mRejectBtn);
+
+
+
+
 
     QObject::connect(mAcceptedBtn,&QPushButton::clicked,[=](){
 
