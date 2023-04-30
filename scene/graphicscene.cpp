@@ -19,13 +19,13 @@
 #include <QGraphicsSceneMouseEvent>
 #include <QGraphicsSceneMouseEvent>
 #include <QGraphicsView>
+#include <QGraphicsDropShadowEffect>
 
 namespace Scene {
 
 GraphicScene::GraphicScene(QObject *parent)
     : QGraphicsScene{parent}
 {
-
 
 
 }
@@ -83,6 +83,7 @@ void Scene::GraphicScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 }
 
 
+
 void Scene::GraphicScene::contextMenuEvent(QGraphicsSceneContextMenuEvent *event)
 {
     auto clickPos = event->scenePos();
@@ -91,10 +92,14 @@ void Scene::GraphicScene::contextMenuEvent(QGraphicsSceneContextMenuEvent *event
     for( auto item : this->items() ){
 
         QRectF rectf(item->pos().x(),item->pos().y(),item->boundingRect().width(),item->boundingRect().height());
-        if( rectf.contains(event->scenePos()) ){
-            qDebug() << "item contains" ;
+        if( rectf.contains(event->scenePos()) && item->isVisible() ){
+            auto mSelectedItemEffect = new QGraphicsDropShadowEffect();
+            mSelectedItemEffect->setBlurRadius(20);
+            mSelectedItemEffect->setOffset(5);
+            item->setGraphicsEffect(mSelectedItemEffect);
             exist = true;
-            break;
+        }else{
+            item->setGraphicsEffect(nullptr);
         }
     }
 
@@ -159,75 +164,8 @@ void Scene::GraphicScene::contextMenuEvent(QGraphicsSceneContextMenuEvent *event
 
         }
     });
-
     mContextMenu->setPosition(event->scenePos().x(),event->scenePos().y());
-
-
-
-
-    //    auto mMenuItem = new Menu::Menu("menuName");
-
-    //    mMenuItem->setPosition(event->scenePos().x(),event->scenePos().y());
-
-    //    this->addItem(mMenuItem);
-
-
-
     QGraphicsScene::contextMenuEvent(event);
-
-
-    return;
-
-    QMenu menu;
-    menu.addAction("add Class",[=](){
-
-        auto mDialog = new GeneratorDialog::ClassDialog();
-        mDialog->exec();
-        if( mDialog->isAccepted() ){
-            CPP::Class::Class* mClassItem = new CPP::Class::Class(mDialog->getClassName());
-
-            for( const auto &item : mDialog->getPrivateFunctionMemberList() ){
-                mClassItem->appendPrivate(item);
-            }
-
-            for( const auto &item : mDialog->getPublicFunctionMemberList() ){
-                mClassItem->appendPublic(item);
-            }
-            auto item = new Items::Class(*mClassItem);
-            this->addItem(item);
-            item->setPos(event->scenePos());
-        }
-    });
-
-    menu.addAction("add Function",[=](){
-        auto mDialog = new GeneratorDialog::FunctionDialog();
-        mDialog->exec();
-        if( mDialog->isAccepted() ){
-
-            CPP::Function::Function mFuction = mDialog->getFunction();
-
-            this->addItem(new Items::Function(mFuction));
-        }
-    });
-
-    menu.addAction("add namespace",[=](){
-
-        auto mDialog = new GeneratorDialog::NameSpaceDialog();
-        mDialog->exec();
-        if( mDialog->isAccepted() ){
-            CPP::NameSpace::NameSpace* mNameSpaceItem = new CPP::NameSpace::NameSpace(mDialog->getNameSpace());
-
-            this->addItem(new Items::NamespaceItem(*mNameSpaceItem));
-        }
-    });
-
-    menu.addAction("Close");
-    menu.exec(event->screenPos());
-
-
-
-    QGraphicsScene::contextMenuEvent(event);
-
 }
 
 
@@ -239,6 +177,24 @@ void Scene::GraphicScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
         this->removeItem(mContextMenu);
         mContextMenu->deleteLater();
         mContextMenu = nullptr;
+    }
+
+    // TODO: setITEMS TYPE
+    for( auto item : this->items() ){
+        auto _item = qgraphicsitem_cast<Items::AbstractItem*>(item);
+        if( _item->getItemType() == Items::ItemType::objectItem ){
+            QRectF rectf(item->pos().x(),item->pos().y(),item->boundingRect().width(),item->boundingRect().height());
+            if( rectf.contains(event->scenePos()) ){
+                    auto mSelectedItemEffect = new QGraphicsDropShadowEffect();
+                    mSelectedItemEffect->setBlurRadius(20);
+                    mSelectedItemEffect->setOffset(5);
+                    item->setGraphicsEffect(mSelectedItemEffect);
+
+            }else{
+                item->setGraphicsEffect(nullptr);
+            }
+        }
+
     }
     QGraphicsScene::mousePressEvent(event);
 }

@@ -11,14 +11,7 @@
 namespace Items {
 
 
-class DrawMenu{
-public:
-    DrawMenu( ){}
-    QString mString;
-    QRectF mRectF;
 
-private:
-};
 
 AbstractItem::AbstractItem()
 {
@@ -34,6 +27,11 @@ QAction* AbstractItem::addMenu(const QString &menuName)
     auto width = metric.boundingRect(menuName).width();
     mMenuList.append(std::make_tuple(action,QRectF(250,mMenuList.size()*(height*1.50),width+10,height*1.4)));
     return action;
+}
+
+ItemType AbstractItem::getItemType() const
+{
+    return mItemType;
 }
 
 } // namespace Items
