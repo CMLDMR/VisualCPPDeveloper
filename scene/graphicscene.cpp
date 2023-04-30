@@ -60,7 +60,7 @@ Menu::Menu *GraphicScene::addMenu(const QString &menuName)
     this->addItem(mMenuItem);
 
     mMenu.append(mMenuItem);
-    mMenuItem->setZValue(1000);
+//    mMenuItem->setZValue(1000);
 
     return mMenuItem;
 }
@@ -90,6 +90,11 @@ void Scene::GraphicScene::contextMenuEvent(QGraphicsSceneContextMenuEvent *event
     auto clickPos = event->scenePos();
     closeSubMenu();
     bool exist = false;
+
+    for( auto item : this->items() ){
+        item->setGraphicsEffect(nullptr);
+    }
+
     for( auto item : this->items() ){
 
         QRectF rectf(item->pos().x(),item->pos().y(),item->boundingRect().width(),item->boundingRect().height());
@@ -99,8 +104,7 @@ void Scene::GraphicScene::contextMenuEvent(QGraphicsSceneContextMenuEvent *event
             mSelectedItemEffect->setOffset(5);
             item->setGraphicsEffect(mSelectedItemEffect);
             exist = true;
-        }else{
-            item->setGraphicsEffect(nullptr);
+            break;
         }
     }
 
@@ -179,23 +183,24 @@ void Scene::GraphicScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
         mContextMenu = nullptr;
     }
 
-    // TODO: setITEMS TYPE
+    for( auto item : this->items() ){
+        item->setGraphicsEffect(nullptr);
+    }
+
     for( auto item : this->items() ){
         auto _item = qgraphicsitem_cast<Items::AbstractItem*>(item);
-        if( _item->getItemType() == Items::ItemType::objectItem ){
+        if( _item->getItemType() == Global::ItemType::objectItem ){
             QRectF rectf(item->pos().x(),item->pos().y(),item->boundingRect().width(),item->boundingRect().height());
             if( rectf.contains(event->scenePos()) ){
                 auto mSelectedItemEffect = new QGraphicsDropShadowEffect();
                 mSelectedItemEffect->setBlurRadius(20);
                 mSelectedItemEffect->setOffset(5);
                 item->setGraphicsEffect(mSelectedItemEffect);
-
-            }else{
-                item->setGraphicsEffect(nullptr);
+                break;
             }
         }else{
             auto __item = qgraphicsitem_cast<Menu::Menu*>(item);
-            if( !__item->isPressed() && !__item->getIsSubMenu() ){
+            if( !__item->getIsSubMenu() ){
                 __item->closeMenu();
             }
         }

@@ -10,7 +10,8 @@
 namespace Menu {
 
 Menu::Menu(const QString &menuName)
-    :mMenuName(menuName)
+    :Global::AbstractItem(Global::ItemType::menuItem),
+    mMenuName(menuName)
 {
     mFont = QFont("Tahoma",12);//TODO: System FONT
     this->setAcceptHoverEvents(true);
@@ -18,6 +19,7 @@ Menu::Menu(const QString &menuName)
 
     mWidth = metric.boundingRect(mMenuName).width()+10;
     mHeight = metric.boundingRect(mMenuName).height();
+    this->setZValue(1000);
 }
 
 Menu::~Menu()
@@ -99,11 +101,6 @@ bool Menu::getIsSubMenu() const
 bool Menu::isPressed() const
 {
     return mPressed;
-}
-
-Items::ItemType Menu::getItemType() const
-{
-    return mItemType;
 }
 
 QString Menu::menuName() const

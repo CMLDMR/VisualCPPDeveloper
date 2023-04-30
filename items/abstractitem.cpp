@@ -29,10 +29,7 @@ QAction* AbstractItem::addMenu(const QString &menuName)
     return action;
 }
 
-ItemType AbstractItem::getItemType() const
-{
-    return mItemType;
-}
+
 
 } // namespace Items
 

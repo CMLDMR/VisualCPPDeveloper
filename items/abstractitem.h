@@ -7,18 +7,16 @@
 #include <QObject>
 #include <tuple>
 #include <QAction>
+#include "global/abstractitem.h"
 
 
 
 
 namespace Items {
 
-enum class ItemType{
-    menuItem = 0,
-    objectItem
-};
 
-class AbstractItem : public QObject, public QGraphicsItem
+
+class AbstractItem : public Global::AbstractItem
 {
     Q_OBJECT
     Q_INTERFACES(QGraphicsItem)
@@ -27,7 +25,6 @@ public:
 
     QAction* addMenu( const QString &menuName );
 
-    ItemType getItemType() const;
 
 signals:
     void addClicked();
@@ -37,7 +34,6 @@ private:
     QPointF mClickPoint;
     QVector<std::tuple<QAction*,QRectF>> mMenuList;
     bool mPressed{false};
-    const ItemType mItemType{ItemType::objectItem};
 
 
 protected:
