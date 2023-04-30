@@ -20,6 +20,20 @@ Menu::Menu(const QString &menuName)
     mHeight = metric.boundingRect(mMenuName).height();
 }
 
+Menu::~Menu()
+{
+    for( auto &item : mMenuList ){
+        if( scene() ){
+            scene()->removeItem(item);
+            delete item;
+            item = nullptr;
+        }else{
+            delete item;
+            item = nullptr;
+        }
+    }
+}
+
 Menu *Menu::addAction(const QString &actionName)
 {
 
@@ -70,7 +84,9 @@ void Menu::setPosition(const qreal x, const qreal &y)
     this->setPos(x,y);
     int i = 0;
     for ( auto item : mMenuList ){
-        item->setPos(this->scenePos().x(),this->scenePos().y()+i*(item->boundingRect().height()+2)+(item->boundingRect().height()+5));
+//        item->setPos(this->scenePos().x(),this->scenePos().y()+i*(item->boundingRect().height()+2)+(item->boundingRect().height()+5));
+        item->setPos(item->mParent->x(),item->mParent->y()+i*(item->boundingRect().height()+2)+(item->boundingRect().height()+5));
+
         i++;
     }
 }
@@ -143,7 +159,7 @@ void Menu::Menu::mousePressEvent(QGraphicsSceneMouseEvent *event)
         }
     }
     emit closeOtherMenu();
-//    qDebug() << mMenuName <<"mPressed" << mPressed;
+    qDebug() << mMenuName <<"mPressed" << mPressed;
 
     this->update();
     QGraphicsItem::mousePressEvent(event);

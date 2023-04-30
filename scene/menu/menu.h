@@ -20,6 +20,7 @@ class Menu : public QObject,  public QGraphicsItem
 
 public:
     Menu(const QString &menuName);
+    virtual ~Menu();
 
     Menu* addAction( const QString &actionName );
 

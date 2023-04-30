@@ -30,6 +30,8 @@ public:
 private:
     QVector<Menu::Menu*> mMenu;
 
+    Menu::Menu* mContextMenu{nullptr};
+
 
     // QGraphicsScene interface
 protected:
