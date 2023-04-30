@@ -27,7 +27,7 @@ signals:
 private:
     QPointF mClickPoint;
     QVector<std::tuple<QAction*,QRectF>> mMenuList;
-
+    bool mPressed{false};
 
 protected:
     virtual void hoverMoveEvent(QGraphicsSceneHoverEvent *event) override;
@@ -36,6 +36,9 @@ protected:
     // QGraphicsItem interface
 public:
     virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) override;
+
+protected:
+    virtual void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
 };
 
 } // namespace Items

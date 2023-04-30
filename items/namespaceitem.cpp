@@ -33,7 +33,29 @@ NamespaceItem::NamespaceItem(const CPP::NameSpace::NameSpace &nameSpace)
         qDebug() << "Add Public Function";
     });
 
-    auto addMember = addMenu("Add Public Member");
+    auto addIncludeFile = addMenu("Add Include File");
+    auto generateCode = addMenu("Generate Code");
+    auto saveCode = addMenu("Save Code");
+    auto saveProject = addMenu("Save Project");
+
+    QObject::connect(addIncludeFile,&QAction::triggered,[=](){
+        auto mDialog = new GeneratorDialog::AddIncludeDialog();
+        mDialog->setIncludeFiles(mFile->includeFiles());
+        mDialog->exec();
+        if( mDialog->isAccepted() ){
+            mFile->setIncludeFiles(mDialog->getIncludeFiles());
+        }
+        delete mDialog;
+    });
+
+    QObject::connect(generateCode,&QAction::triggered,[=](){
+        mFile->addFunction(*mNameSpace);
+        mFile->saveMembers();
+    });
+
+    QObject::connect(saveCode,&QAction::triggered,[=](){
+        mFile->saveFiles();
+    });
 
 }
 
@@ -50,10 +72,12 @@ void Items::NamespaceItem::paint(QPainter *painter, const QStyleOptionGraphicsIt
 {
     QRectF rect = boundingRect();
 
+    painter->setPen(QPen(QColor(240,240,240)));
     painter->drawRect(rect);
 
+    painter->setPen(QPen(QColor(0,0,0)));
+    painter->drawRect(rect.x(),rect.y(),250,rect.height());
     painter->drawText(0,0,"namespace: " + mNameSpace->getName());
 
     AbstractItem::paint(painter,option,widget);
 }
-
