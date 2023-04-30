@@ -19,6 +19,7 @@ public:
     explicit Member();
     Member(const Type &type);
     Member(const Member &other);
+    Member(Member &&other );
     Member(const QJsonObject &other);
 
     Member &setName( const QString &name );
@@ -36,7 +37,7 @@ public:
     void setJsonObject( const QJsonObject &obj );
 
     Member &operator=( const Member &other);
-
+    Member &operator=( Member &&other );
 
 private:
     Type mType;

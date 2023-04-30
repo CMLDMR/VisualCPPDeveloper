@@ -49,6 +49,11 @@ Member::Member(const Member &other)
     this->setJsonObject(other);
 }
 
+Member::Member(Member &&other)
+{
+    this->setJsonObject(other);
+}
+
 Member::Member(const QJsonObject &other)
 {
     this->setJsonObject(other);
@@ -111,6 +116,12 @@ void Member::setJsonObject(const QJsonObject &obj)
 }
 
 Member &Member::operator=(const Member &other)
+{
+    this->setJsonObject(other);
+    return *this;
+}
+
+Member &Member::operator=(Member &&other)
 {
     this->setJsonObject(other);
     return *this;

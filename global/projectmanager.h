@@ -1,0 +1,43 @@
+
+#ifndef GLOBAL_PROJECTMANAGER_H
+#define GLOBAL_PROJECTMANAGER_H
+
+
+#include <QObject>
+#include "cpp/member.h"
+#include <optional>
+
+#include <QVector>
+
+
+namespace Global {
+
+class ProjectManager : public QObject
+{
+    Q_OBJECT
+    Q_DISABLE_COPY(ProjectManager)
+
+public:
+    virtual ~ProjectManager(){}
+    static ProjectManager* instance();
+
+    void append( const CPP::Member &member );
+
+    const CPP::Member &operator[](const int index) const;
+    const CPP::Member *getByName(const QString &name) const;
+
+
+
+signals:
+
+private:
+    explicit ProjectManager(QObject *parent = nullptr);
+
+    static ProjectManager* mProjectManager;
+
+    QVector<CPP::Member> mItemList;
+};
+
+} // namespace Global
+
+#endif // GLOBAL_PROJECTMANAGER_H
