@@ -7,7 +7,7 @@
 
 #include <QMenu>
 #include <QContextMenuEvent>
-
+#include <QResizeEvent>
 
 namespace Widget {
 
@@ -18,8 +18,6 @@ GraphicView::GraphicView()
 
     this->setViewportUpdateMode(ViewportUpdateMode::FullViewportUpdate);
 
-
-
 }
 
 Scene::GraphicScene *GraphicView::graphicScene()
@@ -28,34 +26,29 @@ Scene::GraphicScene *GraphicView::graphicScene()
         mScene = new Scene::GraphicScene();
         this->setScene(mScene);
     }
+    mScene->addMenu("Project");
     return mScene;
 }
 
 } // namespace Widget
 
 
+void Widget::GraphicView::resizeEvent(QResizeEvent *event)
+{
+//    mScene->setMenuPos(this->mapToScene(this->viewport()->geometry()).boundingRect());
+//    qDebug() << event;
+    QGraphicsView::resizeEvent(event);
+}
 
-//void Widget::GraphicView::contextMenuEvent(QContextMenuEvent *event)
-//{
 
-//    if( mScene->selectedItems().size() ){
-//        return;
-//    }
+bool Widget::GraphicView::viewportEvent(QEvent *event)
+{
+    mScene->setMenuPos(getVisibleRect());
+    return QGraphicsView::viewportEvent(event);
+}
 
-//    QMenu menu(this);
-
-//    menu.addAction("add Function",[=](){
-//        auto mDialog = new GeneratorDialog::FunctionDialog();
-//        mDialog->exec();
-//        if( mDialog->isAccepted() ){
-//            CPP::Function::Function mFuction(mDialog->getFunctionName());
-//            mFuction.setDeclaration(mDialog->getDeclaration());
-//            mFuction.setDefination(mDialog->getDefination());
-//            mFuction.setIncludeFiles(mDialog->getIncludeFile());
-//            this->mScene->addItem(new Items::Function(mFuction));
-//        }
-//    });
-//    menu.addAction("Kapat");
-//    menu.exec(event->globalPos());
-
-//}
+void Widget::GraphicView::scrollContentsBy(int dx, int dy)
+{
+//    mScene->setMenuPos(this->mapToScene(this->viewport()->geometry()).boundingRect());
+    QGraphicsView::scrollContentsBy(dx,dy);
+}

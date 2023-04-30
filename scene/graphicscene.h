@@ -5,6 +5,8 @@
 #include <QGraphicsScene>
 
 #include <QObject>
+#include <QList>
+#include "menu/menu.h"
 
 
 namespace Scene {
@@ -14,6 +16,18 @@ class GraphicScene : public QGraphicsScene
     Q_OBJECT
 public:
     explicit GraphicScene(QObject *parent = nullptr);
+
+    void setMenuPos(const QRectF &viewScene);
+
+
+
+    QVector<Menu::Menu *> menu() const;
+
+    Menu::Menu* addMenu(const QString &menuName );
+
+private:
+    QVector<Menu::Menu*> mMenu;
+
 
     // QGraphicsScene interface
 protected:

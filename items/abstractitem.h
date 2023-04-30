@@ -29,6 +29,7 @@ private:
     QVector<std::tuple<QAction*,QRectF>> mMenuList;
     bool mPressed{false};
 
+
 protected:
     virtual void hoverMoveEvent(QGraphicsSceneHoverEvent *event) override;
     virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) override;
@@ -39,6 +40,7 @@ public:
 
 protected:
     virtual void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
+
 };
 
 } // namespace Items
