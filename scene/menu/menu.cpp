@@ -45,17 +45,16 @@ Menu *Menu::addAction(const QString &actionName)
     mMenuAction->mParent = this;
     this->scene()->addItem(mMenuAction);
 
+    QObject::connect(mMenuAction,&Menu::clicked,[=](){
+        mMouseHover = false;
+        closeMenu();
+    });
+
     QObject::connect(this,&Menu::Menu::closeOtherMenu,[=](){
         mMenuAction->closeMenu();
     });
 
-    QObject::connect(mMenuAction,&Menu::clicked,[=](){
-        mMouseHover = false;
-        mPressed = false;
-        for ( auto item : mMenuList ){
-            item->setVisible(false);
-        }
-    });
+
 
     return mMenuAction;
 }
@@ -77,6 +76,7 @@ void Menu::closeMenu()
     }
     mPressed = false;
 
+    this->update();
 }
 
 void Menu::setPosition(const qreal x, const qreal &y)
@@ -89,6 +89,16 @@ void Menu::setPosition(const qreal x, const qreal &y)
 
         i++;
     }
+}
+
+bool Menu::getIsSubMenu() const
+{
+    return isSubMenu;
+}
+
+bool Menu::isPressed() const
+{
+    return mPressed;
 }
 
 Items::ItemType Menu::getItemType() const
@@ -139,7 +149,7 @@ void Menu::Menu::paint(QPainter *painter, const QStyleOptionGraphicsItem *option
 
 void Menu::Menu::hoverMoveEvent(QGraphicsSceneHoverEvent *event)
 {
-    //    this->update();
+        this->update();
     QGraphicsItem::hoverMoveEvent(event);
 }
 
@@ -153,22 +163,25 @@ void Menu::Menu::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
     if( mPressed ){
         mMouseHover = false;
-        mPressed = false;
         closeMenu();
     }else{
         mPressed = true;
         if( !mMenuList.size() ){
             emit clicked();
             mMouseHover = false;
+//            qDebug() << "Clicked: " << mMenuName;
         }else{
             mMouseHover = false;
             openMenu();
         }
-    }
-    emit closeOtherMenu();
-    qDebug() << mMenuName <<"mPressed" << mPressed;
 
+    }
     this->update();
+
+
+    emit closeOtherMenu();
+//    qDebug() << mMenuName <<"mPressed" << mPressed;
+
     QGraphicsItem::mousePressEvent(event);
 }
 

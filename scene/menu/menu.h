@@ -63,6 +63,10 @@ public:
 
     Items::ItemType getItemType() const;
 
+    bool isPressed() const;
+
+    bool getIsSubMenu() const;
+
 protected:
     virtual void hoverMoveEvent(QGraphicsSceneHoverEvent *event) override;
     virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) override;
