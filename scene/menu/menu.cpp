@@ -91,6 +91,11 @@ void Menu::setPosition(const qreal x, const qreal &y)
     }
 }
 
+Items::ItemType Menu::getItemType() const
+{
+    return mItemType;
+}
+
 QString Menu::menuName() const
 {
     return mMenuName;
@@ -127,6 +132,8 @@ void Menu::Menu::paint(QPainter *painter, const QStyleOptionGraphicsItem *option
     }
     menuRect.setX(menuRect.x()+5);
     painter->drawText(menuRect,mMenuName);
+
+
 
 }
 

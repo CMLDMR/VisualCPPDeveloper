@@ -10,6 +10,8 @@
 
 #include <QGraphicsTextItem>
 
+#include "items/abstractitem.h"
+
 // TODO: set MenuType customContextMenu
 
 namespace Menu {
@@ -47,6 +49,9 @@ private:
     bool isSubMenu{false};
     Menu *mParent{nullptr};
 
+    const Items::ItemType mItemType{Items::ItemType::menuItem};
+
+
     // QGraphicsItem interface
 public:
     virtual QRectF boundingRect() const override;
@@ -55,6 +60,8 @@ public:
     void setFont(const QFont &newFont);
 
     QString menuName() const;
+
+    Items::ItemType getItemType() const;
 
 protected:
     virtual void hoverMoveEvent(QGraphicsSceneHoverEvent *event) override;

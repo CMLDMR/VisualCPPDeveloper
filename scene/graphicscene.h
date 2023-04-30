@@ -9,6 +9,8 @@
 #include "menu/menu.h"
 
 
+class QGraphicsDropShadowEffect;
+
 namespace Scene {
 
 class GraphicScene : public QGraphicsScene
@@ -31,6 +33,7 @@ private:
     QVector<Menu::Menu*> mMenu;
 
     Menu::Menu* mContextMenu{nullptr};
+
 
 
     // QGraphicsScene interface
