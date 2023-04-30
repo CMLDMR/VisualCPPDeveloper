@@ -34,8 +34,8 @@ MainWindow::MainWindow(QWidget *parent)
 
 
 
-    this->setMinimumHeight(450);
-    this->setMinimumWidth(720);
+    this->setMinimumHeight(640);
+    this->setMinimumWidth(1024);
 }
 
 MainWindow::~MainWindow()
