@@ -18,7 +18,7 @@ Class::Class(const QString &className)
 
     mClass = new CPP::Class::Class(className);
     mFile = new CPP::File::File(className);
-
+    this->initMenu();
 }
 
 Class::Class(const CPP::Class::Class &className)
@@ -27,6 +27,7 @@ Class::Class(const CPP::Class::Class &className)
 
     mClass = new CPP::Class::Class(className);
     mFile = new CPP::File::File(className.getName());
+    this->initMenu();
 }
 
 } // namespace Items
@@ -35,7 +36,7 @@ Class::Class(const CPP::Class::Class &className)
 
 QRectF Items::Class::boundingRect() const
 {
-    return QRectF(0,0,100,100);
+    return QRectF(0,0,400,100);
 }
 
 void Items::Class::paint(QPainter *painter,
@@ -46,26 +47,36 @@ void Items::Class::paint(QPainter *painter,
     painter->fillRect(rect,QColor(175,200,175));
     painter->drawRect(rect);
     painter->drawText(0,0,mClass->getName());
+
+    AbstractItem::paint(painter,option,widget);
+
 }
 
 
-
-void Items::Class::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
+void Items::Class::initMenu()
 {
-    QMenu menu;
 
-    auto editAction = menu.addAction("Düzenle");
+
+    auto editAction = addMenu("Düzenle");
 
     //TODO: add include file
-    auto addIncludeFileAction = menu.addAction("add Include");
+    auto addIncludeFileAction = addMenu("add Include");
 
-    menu.addSeparator();
-    auto saveAction = menu.addAction("Generate Code");
-    auto saveToFileAction = menu.addAction("Save");
+    auto saveAction = addMenu("Generate Code");
+    auto saveToFileAction = addMenu("Save");
 
-    auto selected = menu.exec(event->screenPos());
 
-    if( selected == editAction ){
+    QObject::connect(addIncludeFileAction,&QAction::triggered,[=](){
+        auto mDialog = new GeneratorDialog::AddIncludeDialog();
+        mDialog->setIncludeFiles(mFile->includeFiles());
+        mDialog->exec();
+        if( mDialog->isAccepted() ){
+            mFile->setIncludeFiles(mDialog->getIncludeFiles());
+        }
+        delete mDialog;
+    });
+
+    QObject::connect(editAction,&QAction::triggered,[=](){
         auto mDialog = new GeneratorDialog::ClassDialog();
         mDialog->exec();
         if( mDialog->isAccepted() ){
@@ -76,29 +87,18 @@ void Items::Class::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
                 mClass->appendPublic(item);
             }
         }
-    }
+    });
 
-    if( selected == addIncludeFileAction ){
-        auto mDialog = new GeneratorDialog::AddIncludeDialog();
-        mDialog->setIncludeFiles(mFile->includeFiles());
-        mDialog->exec();
-        if( mDialog->isAccepted() ){
-            mFile->setIncludeFiles(mDialog->getIncludeFiles());
-        }
-        delete mDialog;
 
-    }
-
-    if( selected == saveAction ){
-        mFile->addMember(*mClass);
+    QObject::connect(saveAction,&QAction::triggered,[=](){
+        mFile->addFunction(*mClass);
         mFile->saveMembers();
-    }
+    });
 
-    if( selected == saveToFileAction ){
+    QObject::connect(saveToFileAction,&QAction::triggered,[=](){
         mFile->saveFiles();
-    }
+    });
 
-    QGraphicsItem::mouseDoubleClickEvent(event);
 }
 
 

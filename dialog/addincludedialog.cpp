@@ -27,7 +27,7 @@ AddIncludeDialog::AddIncludeDialog()
         this->close();
     });
 
-    QObject::connect(mAcceptedBtn,&QPushButton::clicked,[=](){
+    QObject::connect(mRejectedBtn,&QPushButton::clicked,[=](){
 
         this->close();
     });
