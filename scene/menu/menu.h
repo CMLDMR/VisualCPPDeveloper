@@ -10,6 +10,7 @@
 
 #include <QGraphicsTextItem>
 
+// TODO: set MenuType customContextMenu
 
 namespace Menu {
 

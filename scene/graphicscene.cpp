@@ -36,7 +36,7 @@ void GraphicScene::setMenuPos(const QRectF &viewScene )
     for( int i = 0 ; i < mMenu.size() ; i++ ){
         auto item = mMenu[i];
         item->setPosition(10+viewScene.x() + LastWidth,10+viewScene.y());
-        LastWidth += item->boundingRect().width()+1;
+        LastWidth += item->boundingRect().width();
     }
 }
 
@@ -85,7 +85,21 @@ void Scene::GraphicScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 
 void Scene::GraphicScene::contextMenuEvent(QGraphicsSceneContextMenuEvent *event)
 {
+    auto clickPos = event->scenePos();
     closeSubMenu();
+    bool exist = false;
+    for( auto item : this->items() ){
+
+        QRectF rectf(item->pos().x(),item->pos().y(),item->boundingRect().width(),item->boundingRect().height());
+        if( rectf.contains(event->scenePos()) ){
+            qDebug() << "item contains" ;
+            exist = true;
+            break;
+        }
+    }
+
+    if( exist ) return;
+
 
     if( mContextMenu ){
         this->removeItem(mContextMenu);
@@ -112,7 +126,7 @@ void Scene::GraphicScene::contextMenuEvent(QGraphicsSceneContextMenuEvent *event
             }
             auto item = new Items::Class(*mClassItem);
             this->addItem(item);
-            item->setPos(event->scenePos());
+            item->setPos(clickPos);
         }
     });
 
@@ -124,8 +138,11 @@ void Scene::GraphicScene::contextMenuEvent(QGraphicsSceneContextMenuEvent *event
         if( mDialog->isAccepted() ){
 
             CPP::Function::Function mFuction = mDialog->getFunction();
+            auto item = new Items::Function(mFuction);
 
-            this->addItem(new Items::Function(mFuction));
+            this->addItem(item);
+            item->setPos(clickPos);
+
         }
     });
     auto addNamespace = mContextMenu->addAction("Add Namespace ");
@@ -135,8 +152,11 @@ void Scene::GraphicScene::contextMenuEvent(QGraphicsSceneContextMenuEvent *event
         mDialog->exec();
         if( mDialog->isAccepted() ){
             CPP::NameSpace::NameSpace* mNameSpaceItem = new CPP::NameSpace::NameSpace(mDialog->getNameSpace());
+            auto item = new Items::NamespaceItem(*mNameSpaceItem);
 
-            this->addItem(new Items::NamespaceItem(*mNameSpaceItem));
+            this->addItem(item);
+            item->setPos(clickPos);
+
         }
     });
 
@@ -214,6 +234,7 @@ void Scene::GraphicScene::contextMenuEvent(QGraphicsSceneContextMenuEvent *event
 
 void Scene::GraphicScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
+    closeSubMenu();
     if( mContextMenu ){
         this->removeItem(mContextMenu);
         mContextMenu->deleteLater();
