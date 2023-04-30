@@ -10,13 +10,13 @@
 
 #include <QGraphicsTextItem>
 
-#include "items/abstractitem.h"
+#include "global/abstractitem.h"
 
 // TODO: set MenuType customContextMenu
 
 namespace Menu {
 
-class Menu : public QObject,  public QGraphicsItem
+class Menu : public Global::AbstractItem
 {
     Q_OBJECT
     Q_INTERFACES(QGraphicsItem)
@@ -49,9 +49,6 @@ private:
     bool isSubMenu{false};
     Menu *mParent{nullptr};
 
-    const Items::ItemType mItemType{Items::ItemType::menuItem};
-
-
     // QGraphicsItem interface
 public:
     virtual QRectF boundingRect() const override;
@@ -60,8 +57,6 @@ public:
     void setFont(const QFont &newFont);
 
     QString menuName() const;
-
-    Items::ItemType getItemType() const;
 
     bool isPressed() const;
 
