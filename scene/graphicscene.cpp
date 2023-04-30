@@ -85,6 +85,79 @@ void Scene::GraphicScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 
 void Scene::GraphicScene::contextMenuEvent(QGraphicsSceneContextMenuEvent *event)
 {
+    closeSubMenu();
+
+    if( mContextMenu ){
+        this->removeItem(mContextMenu);
+        mContextMenu = nullptr;
+    }
+
+    mContextMenu = new Menu::Menu("Context Menü");
+                   this->addItem(mContextMenu);
+
+    auto addClass = mContextMenu->addAction("Add Class ");
+    addClass->setVisible(true);
+    QObject::connect(addClass,&Menu::Menu::clicked,[=](){
+        auto mDialog = new GeneratorDialog::ClassDialog();
+        mDialog->exec();
+        if( mDialog->isAccepted() ){
+            CPP::Class::Class* mClassItem = new CPP::Class::Class(mDialog->getClassName());
+
+            for( const auto &item : mDialog->getPrivateFunctionMemberList() ){
+                mClassItem->appendPrivate(item);
+            }
+
+            for( const auto &item : mDialog->getPublicFunctionMemberList() ){
+                mClassItem->appendPublic(item);
+            }
+            auto item = new Items::Class(*mClassItem);
+            this->addItem(item);
+            item->setPos(event->scenePos());
+        }
+    });
+
+    auto addFunction = mContextMenu->addAction("Add Function ");
+    addFunction->setVisible(true);
+    QObject::connect(addFunction,&Menu::Menu::clicked,[=](){
+        auto mDialog = new GeneratorDialog::FunctionDialog();
+        mDialog->exec();
+        if( mDialog->isAccepted() ){
+
+            CPP::Function::Function mFuction = mDialog->getFunction();
+
+            this->addItem(new Items::Function(mFuction));
+        }
+    });
+    auto addNamespace = mContextMenu->addAction("Add Namespace ");
+    addNamespace->setVisible(true);
+    QObject::connect(addNamespace,&Menu::Menu::clicked,[=](){
+        auto mDialog = new GeneratorDialog::NameSpaceDialog();
+        mDialog->exec();
+        if( mDialog->isAccepted() ){
+            CPP::NameSpace::NameSpace* mNameSpaceItem = new CPP::NameSpace::NameSpace(mDialog->getNameSpace());
+
+            this->addItem(new Items::NamespaceItem(*mNameSpaceItem));
+        }
+    });
+
+    mContextMenu->setPosition(event->scenePos().x(),event->scenePos().y());
+
+
+
+
+    //    auto mMenuItem = new Menu::Menu("menuName");
+
+    //    mMenuItem->setPosition(event->scenePos().x(),event->scenePos().y());
+
+    //    this->addItem(mMenuItem);
+
+
+
+    QGraphicsScene::contextMenuEvent(event);
+
+
+    return;
+
     QMenu menu;
     menu.addAction("add Class",[=](){
 
@@ -131,6 +204,8 @@ void Scene::GraphicScene::contextMenuEvent(QGraphicsSceneContextMenuEvent *event
     menu.addAction("Close");
     menu.exec(event->screenPos());
 
+
+
     QGraphicsScene::contextMenuEvent(event);
 
 }
@@ -139,7 +214,10 @@ void Scene::GraphicScene::contextMenuEvent(QGraphicsSceneContextMenuEvent *event
 
 void Scene::GraphicScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
-
-
+    if( mContextMenu ){
+        this->removeItem(mContextMenu);
+        mContextMenu->deleteLater();
+        mContextMenu = nullptr;
+    }
     QGraphicsScene::mousePressEvent(event);
 }
