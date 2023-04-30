@@ -5,6 +5,7 @@
 #include <QGraphicsView>
 
 #include <QObject>
+#include <QtMath>
 
 
 namespace Scene {
@@ -24,6 +25,14 @@ public:
     Scene::GraphicScene *graphicScene();
 
 
+    QRectF getVisibleRect()
+    {
+        QPointF A = this->mapToScene( QPoint(0, 0) );
+        QPointF B = this->mapToScene( QPoint(
+            this->viewport()->width(),
+            this->viewport()->height() ));
+        return QRectF( A, B );
+    }
 
 signals:
     void classAddClicked();
@@ -31,14 +40,14 @@ signals:
 private:
     Scene::GraphicScene* mScene{nullptr};
 
-//    // QWidget interface
-//protected:
-//    virtual void contextMenuEvent(QContextMenuEvent *event) override;
+    // QWidget interface
+protected:
+    virtual void resizeEvent(QResizeEvent *event) override;
 
-
-
-
-
+    // QAbstractScrollArea interface
+protected:
+    virtual bool viewportEvent(QEvent *event) override;
+    virtual void scrollContentsBy(int dx, int dy) override;
 };
 
 } // namespace Widget
