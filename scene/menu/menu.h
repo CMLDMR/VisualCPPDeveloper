@@ -13,11 +13,6 @@
 
 namespace Menu {
 
-
-
-
-
-
 class Menu : public QObject,  public QGraphicsItem
 {
     Q_OBJECT
@@ -26,11 +21,16 @@ class Menu : public QObject,  public QGraphicsItem
 public:
     Menu(const QString &menuName);
 
-
     Menu* addAction( const QString &actionName );
+
+    void openMenu();
+    void closeMenu();
+
+    void setPosition(const qreal x,const qreal &y);
 
 signals:
     void clicked();
+    void closeOtherMenu();
 
 private:
 //    QPointF mClickPoint;
@@ -42,6 +42,8 @@ private:
     int mWidth;
     int mHeight;
     QFont mFont;
+    bool isSubMenu{false};
+    Menu *mParent{nullptr};
 
     // QGraphicsItem interface
 public:
@@ -49,6 +51,8 @@ public:
     virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) override;
 
     void setFont(const QFont &newFont);
+
+    QString menuName() const;
 
 protected:
     virtual void hoverMoveEvent(QGraphicsSceneHoverEvent *event) override;

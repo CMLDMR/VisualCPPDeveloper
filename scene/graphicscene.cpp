@@ -32,8 +32,11 @@ GraphicScene::GraphicScene(QObject *parent)
 
 void GraphicScene::setMenuPos(const QRectF &viewScene )
 {
-    for( auto &item : mMenu ){
-        item->setPos(viewScene.x(),viewScene.y());
+    qreal LastWidth = 0;
+    for( int i = 0 ; i < mMenu.size() ; i++ ){
+        auto item = mMenu[i];
+        item->setPosition(10+viewScene.x() + LastWidth,10+viewScene.y());
+        LastWidth += item->boundingRect().width()+1;
     }
 }
 
@@ -45,22 +48,29 @@ QVector<Menu::Menu *> GraphicScene::menu() const
 Menu::Menu *GraphicScene::addMenu(const QString &menuName)
 {
     auto mMenuItem = new Menu::Menu(menuName);
-    this->addItem(mMenuItem);
-    mMenuItem->addAction("File");
-    mMenuItem->addAction("EWdit");
-    mMenuItem->addAction("Save");
-    mMenuItem->addAction("Save As");
-    auto cloneMenu = mMenuItem->addAction("Close");
 
-    QObject::connect(cloneMenu,&Menu::Menu::clicked,[=](){
-        qDebug() << "Close Menu Clicked";
+    QObject::connect(mMenuItem,&Menu::Menu::closeOtherMenu,[=](){
+        for( auto &item : mMenu ){
+            if(item->menuName() != menuName ){
+                item->closeMenu();
+            }
+        }
     });
-    if( mMenu.size() ){
 
-    }
+    this->addItem(mMenuItem);
+
     mMenu.append(mMenuItem);
 
     return mMenuItem;
+}
+
+void GraphicScene::closeSubMenu()
+{
+
+    for( auto &item : mMenu ){
+        item->closeMenu();
+    }
+
 }
 
 } // namespace Scene
@@ -125,3 +135,11 @@ void Scene::GraphicScene::contextMenuEvent(QGraphicsSceneContextMenuEvent *event
 
 }
 
+
+
+void Scene::GraphicScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
+{
+
+
+    QGraphicsScene::mousePressEvent(event);
+}

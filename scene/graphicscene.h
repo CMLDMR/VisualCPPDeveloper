@@ -25,6 +25,8 @@ public:
 
     Menu::Menu* addMenu(const QString &menuName );
 
+    void closeSubMenu();
+
 private:
     QVector<Menu::Menu*> mMenu;
 
@@ -37,6 +39,10 @@ protected:
 protected:
     virtual void contextMenuEvent(QGraphicsSceneContextMenuEvent *event) override;
 
+
+    // QGraphicsScene interface
+protected:
+    virtual void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
 };
 
 } // namespace Scene
