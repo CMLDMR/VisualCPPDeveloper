@@ -17,6 +17,7 @@ Function::Function(const QString &functionName)
     setFlag(ItemIsMovable);
     mFunction = new CPP::Function::Function(functionName);
     mFile = new CPP::File::File(functionName);
+    this->initMenu();
 }
 
 Function::Function(const CPP::Function::Function &function)
@@ -24,19 +25,41 @@ Function::Function(const CPP::Function::Function &function)
     mFunction = new CPP::Function::Function(function);
     mFile = new CPP::File::File(mFunction->getName());
     setFlag(ItemIsMovable);
+    this->initMenu();
 }
 
-QRectF Function::addText(QPainter *painter, const QString &text)
+void Function::initMenu()
 {
 
-    QRectF rect;
-    QRectF rect1;
-    painter->drawText(rect,0,text,&rect1);
+    auto editAction = addMenu("Düzenle");
+                      auto addIncludeFileAction = addMenu("add Include");
 
-    return rect1;
+    auto saveAction = addMenu("Generate Code");
+    auto saveToFileAction = addMenu("Save");
 
+    QObject::connect(editAction,&QAction::triggered,this,&Function::editFunction);
 
+    QObject::connect(addIncludeFileAction,&QAction::triggered,[=](){
+        auto mDialog = new GeneratorDialog::AddIncludeDialog();
+        mDialog->setIncludeFiles(mFile->includeFiles());
+        mDialog->exec();
+        if( mDialog->isAccepted() ){
+            mFile->setIncludeFiles(mDialog->getIncludeFiles());
+        }
+        delete mDialog;
+    });
+
+    QObject::connect(saveAction,&QAction::triggered,[=](){
+        mFile->addFunction(*mFunction);
+        mFile->saveMembers();
+    });
+
+    QObject::connect(saveToFileAction,&QAction::triggered,[=](){
+        mFile->saveFiles();
+    });
 }
+
+
 
 void Function::editFunction()
 {
@@ -63,7 +86,7 @@ void Function::editFunction()
 
 QRectF Items::Function::boundingRect() const
 {
-    return QRectF(0,0,300,100);
+    return QRectF(0,0,400,100);
 
 }
 
@@ -77,6 +100,7 @@ void Items::Function::paint(QPainter *painter, const QStyleOptionGraphicsItem *o
     painter->drawText(0,0,"Function: " + mFunction->getName());
     painter->drawText(0,20,mFunction->getDeclaration());
 
+    AbstractItem::paint(painter,option,widget);
 }
 
 
@@ -112,7 +136,6 @@ void Items::Function::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
                 mFile->setIncludeFiles(mDialog->getIncludeFiles());
             }
             delete mDialog;
-
         }
 
         if( selected == saveAction ){

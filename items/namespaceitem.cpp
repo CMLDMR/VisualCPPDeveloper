@@ -36,7 +36,6 @@ NamespaceItem::NamespaceItem(const CPP::NameSpace::NameSpace &nameSpace)
     auto addIncludeFile = addMenu("Add Include File");
     auto generateCode = addMenu("Generate Code");
     auto saveCode = addMenu("Save Code");
-    auto saveProject = addMenu("Save Project");
 
     QObject::connect(addIncludeFile,&QAction::triggered,[=](){
         auto mDialog = new GeneratorDialog::AddIncludeDialog();

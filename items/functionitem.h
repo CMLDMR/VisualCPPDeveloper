@@ -4,6 +4,8 @@
 
 #include <QGraphicsItem>
 
+#include "abstractitem.h"
+
 namespace CPP {
 
 class Member;
@@ -21,7 +23,7 @@ class File;
 
 namespace Items {
 
-class Function : public QGraphicsItem
+class Function : public AbstractItem
 {
 public:
     Function(const QString &functionName);
@@ -33,9 +35,10 @@ private:
     CPP::Function::Function* mFunction;
     CPP::File::File* mFile;
 
-    QRectF addText( QPainter* painter, const QString &text );
+    void initMenu();
 
     void editFunction();
+
 
     // QGraphicsItem interface
 public:
