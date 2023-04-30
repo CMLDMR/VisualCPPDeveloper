@@ -60,17 +60,18 @@ Menu::Menu *GraphicScene::addMenu(const QString &menuName)
     this->addItem(mMenuItem);
 
     mMenu.append(mMenuItem);
+    mMenuItem->setZValue(1000);
 
     return mMenuItem;
 }
 
 void GraphicScene::closeSubMenu()
 {
-
     for( auto &item : mMenu ){
-        item->closeMenu();
+        if( !item->isPressed() ){
+            item->closeMenu();
+        }
     }
-
 }
 
 } // namespace Scene
@@ -172,7 +173,6 @@ void Scene::GraphicScene::contextMenuEvent(QGraphicsSceneContextMenuEvent *event
 
 void Scene::GraphicScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
-    closeSubMenu();
     if( mContextMenu ){
         this->removeItem(mContextMenu);
         mContextMenu->deleteLater();
@@ -185,16 +185,27 @@ void Scene::GraphicScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
         if( _item->getItemType() == Items::ItemType::objectItem ){
             QRectF rectf(item->pos().x(),item->pos().y(),item->boundingRect().width(),item->boundingRect().height());
             if( rectf.contains(event->scenePos()) ){
-                    auto mSelectedItemEffect = new QGraphicsDropShadowEffect();
-                    mSelectedItemEffect->setBlurRadius(20);
-                    mSelectedItemEffect->setOffset(5);
-                    item->setGraphicsEffect(mSelectedItemEffect);
+                auto mSelectedItemEffect = new QGraphicsDropShadowEffect();
+                mSelectedItemEffect->setBlurRadius(20);
+                mSelectedItemEffect->setOffset(5);
+                item->setGraphicsEffect(mSelectedItemEffect);
 
             }else{
                 item->setGraphicsEffect(nullptr);
             }
+        }else{
+            auto __item = qgraphicsitem_cast<Menu::Menu*>(item);
+            if( !__item->isPressed() && !__item->getIsSubMenu() ){
+                __item->closeMenu();
+            }
         }
 
     }
+
+//    if( selectedAny ){
+
+//    }
+//    closeSubMenu();
+
     QGraphicsScene::mousePressEvent(event);
 }
