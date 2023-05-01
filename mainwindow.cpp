@@ -31,9 +31,6 @@ MainWindow::MainWindow(QWidget *parent)
 
     mScene = mGraphicView->graphicScene();
 
-
-
-
     this->setMinimumHeight(640);
     this->setMinimumWidth(1024);
 }

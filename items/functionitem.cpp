@@ -6,6 +6,8 @@
 #include "dialog/functiondialog.h"
 #include "dialog/addincludedialog.h"
 
+#include "global/projectmanager.h"
+
 #include <QPainter>
 #include <QMenu>
 #include <QGraphicsSceneMouseEvent>
@@ -44,18 +46,25 @@ void Function::initMenu()
         mDialog->setIncludeFiles(mFile->includeFiles());
         mDialog->exec();
         if( mDialog->isAccepted() ){
-            mFile->setIncludeFiles(mDialog->getIncludeFiles());
+//            mFile->setIncludeFiles(mDialog->getIncludeFiles());
+            mFunction->setIncludeFiles(mDialog->getIncludeFiles());
         }
         delete mDialog;
     });
 
     QObject::connect(saveAction,&QAction::triggered,[=](){
-        mFile->addFunction(*mFunction);
-        mFile->saveMembers();
+
+        Global::ProjectManager::instance()->append(*mFunction);
+        Global::ProjectManager::instance()->generateCode(*mFunction);
+
+//        mFile->addFunction(*mFunction);
+//        mFile->saveMembers();
     });
 
     QObject::connect(saveToFileAction,&QAction::triggered,[=](){
-        mFile->saveFiles();
+//        mFile->saveFiles();
+        Global::ProjectManager::instance()->save();
+
     });
 }
 
@@ -114,8 +123,8 @@ void Items::Function::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 
         QMenu menu;
 
-        auto editAction = menu.addAction("Düzenle");
-        auto addIncludeFileAction = menu.addAction("add Include");
+        auto editAction = menu.addAction("edit");
+        auto addIncludeFileAction = menu.addAction("add header");
 
                           menu.addSeparator();
         auto saveAction = menu.addAction("Generate Code");

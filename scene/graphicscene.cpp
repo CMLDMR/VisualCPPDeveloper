@@ -15,6 +15,8 @@
 #include "cpp/function.h"
 #include "cpp/class.h"
 
+#include "global/projectmanager.h"
+
 #include <QMenu>
 #include <QGraphicsSceneMouseEvent>
 #include <QGraphicsSceneMouseEvent>
@@ -155,6 +157,7 @@ void Scene::GraphicScene::contextMenuEvent(QGraphicsSceneContextMenuEvent *event
 
         }
     });
+
     auto addNamespace = mContextMenu->addAction("Add Namespace ");
     addNamespace->setVisible(true);
     QObject::connect(addNamespace,&Menu::Menu::clicked,[=](){
@@ -187,6 +190,7 @@ void Scene::GraphicScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
         item->setGraphicsEffect(nullptr);
     }
 
+    //TODO: no menu hiding when click space?
     for( auto item : this->items() ){
         auto _item = qgraphicsitem_cast<Items::AbstractItem*>(item);
         if( _item->getItemType() == Global::ItemType::objectItem ){
@@ -201,7 +205,7 @@ void Scene::GraphicScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
         }else{
             auto __item = qgraphicsitem_cast<Menu::Menu*>(item);
             if( !__item->getIsSubMenu() ){
-                __item->closeMenu();
+//                __item->closeMenu();
             }
         }
 

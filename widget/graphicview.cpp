@@ -4,6 +4,7 @@
 #include "scene/graphicscene.h"
 #include "items/functionitem.h"
 #include "dialog/functiondialog.h"
+#include "dialog/newprojectdialog.h"
 
 #include <QMenu>
 #include <QContextMenuEvent>
@@ -27,14 +28,16 @@ Scene::GraphicScene *GraphicView::graphicScene()
         mScene = new Scene::GraphicScene();
         this->setScene(mScene);
     }
+
     auto MainMenu = mScene->addMenu("Project");
 
-    MainMenu->addAction("New Project");
+    auto newProject = MainMenu->addAction("New Project");
     MainMenu->addAction("Open Folder");
     MainMenu->addAction("Save");
     MainMenu->addAction("Save As");
     auto closeMenu = MainMenu->addAction("Quit");
 
+    QObject::connect(newProject,&Menu::Menu::clicked,this,&GraphicView::newProjectDialog);
     QObject::connect(closeMenu,&Menu::Menu::clicked,[=](){
         qDebug() << "Close Menu Clicked";
     });
@@ -42,9 +45,7 @@ Scene::GraphicScene *GraphicView::graphicScene()
     auto editMenu = mScene->addMenu("Edit");
 
     editMenu->addAction("Font Change");
-    editMenu->addAction("Show Grid");
-    editMenu->addAction("Save");
-    editMenu->addAction("Save As");
+
 
 
     QObject::connect(editMenu,&Menu::Menu::clicked,[=](){
@@ -54,11 +55,7 @@ Scene::GraphicScene *GraphicView::graphicScene()
 
     auto viewMenu = mScene->addMenu("View Settings");
 
-    viewMenu->addAction("settings");
-    viewMenu->addAction("windows");
-    viewMenu->addAction("help");
-    viewMenu->addAction("About");
-
+    viewMenu->addAction("Show Grid");
 
     QObject::connect(viewMenu,&Menu::Menu::clicked,[=](){
         qDebug() << "Close Menu Clicked";
@@ -66,6 +63,17 @@ Scene::GraphicScene *GraphicView::graphicScene()
 
 
     return mScene;
+}
+
+void GraphicView::newProjectDialog()
+{
+
+    auto mDialog = new GeneratorDialog::NewProjectDialog();
+
+    mDialog->exec();
+
+    delete mDialog;
+
 }
 
 } // namespace Widget

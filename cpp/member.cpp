@@ -49,6 +49,11 @@ Member::Member(const Member &other)
     this->setJsonObject(other);
 }
 
+Member::Member(Member &&other)
+{
+    this->setJsonObject(other);
+}
+
 Member::Member(const QJsonObject &other)
 {
     this->setJsonObject(other);
@@ -81,6 +86,16 @@ Member::Type Member::getType() const
     }
 }
 
+void Member::setIncludeFiles(const QString &includeHeaders)
+{
+    this->insert("includes",includeHeaders);
+}
+
+QString Member::getIncludeFiles() const
+{
+    return this->value("includes").toString();
+}
+
 QString Member::getName() const
 {
     return this->value("name").toString();
@@ -111,6 +126,12 @@ void Member::setJsonObject(const QJsonObject &obj)
 }
 
 Member &Member::operator=(const Member &other)
+{
+    this->setJsonObject(other);
+    return *this;
+}
+
+Member &Member::operator=(Member &&other)
 {
     this->setJsonObject(other);
     return *this;

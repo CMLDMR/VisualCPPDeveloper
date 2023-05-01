@@ -11,6 +11,7 @@
 
 namespace CPP {
 
+//TODO: UUID per member object
 class Member : public QJsonObject
 {
 public:
@@ -19,6 +20,7 @@ public:
     explicit Member();
     Member(const Type &type);
     Member(const Member &other);
+    Member(Member &&other );
     Member(const QJsonObject &other);
 
     Member &setName( const QString &name );
@@ -30,13 +32,16 @@ public:
     Member &setType( const QString &type );
     Type getType() const;
 
+    void setIncludeFiles( const QString &includeHeaders );
+    QString getIncludeFiles() const;
+
     QString getName() const;
 
     void setJsonObject( const Member &obj );
     void setJsonObject( const QJsonObject &obj );
 
     Member &operator=( const Member &other);
-
+    Member &operator=( Member &&other );
 
 private:
     Type mType;
