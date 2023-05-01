@@ -40,6 +40,8 @@ signals:
 private:
     Scene::GraphicScene* mScene{nullptr};
 
+    void newProjectDialog();
+
     // QWidget interface
 protected:
     virtual void resizeEvent(QResizeEvent *event) override;

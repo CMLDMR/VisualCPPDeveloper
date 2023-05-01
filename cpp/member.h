@@ -11,6 +11,7 @@
 
 namespace CPP {
 
+//TODO: UUID per member object
 class Member : public QJsonObject
 {
 public:
@@ -30,6 +31,9 @@ public:
     ///
     Member &setType( const QString &type );
     Type getType() const;
+
+    void setIncludeFiles( const QString &includeHeaders );
+    QString getIncludeFiles() const;
 
     QString getName() const;
 

@@ -8,6 +8,11 @@
 #include <optional>
 
 #include <QVector>
+#include <QJsonObject>
+#include <QJsonArray>
+#include <QJsonValue>
+#include <QJsonDocument>
+
 
 
 namespace Global {
@@ -28,6 +33,20 @@ public:
 
 
 
+    QString projectName() const;
+    void setProjectName(const QString &newProjectName);
+
+    QString projectLocation() const;
+    void setProjectLocation(const QString &newProjectLocation);
+
+    void newProject( const QString &projectName,
+                    const QString &projectPath );
+
+    void generateCode( const CPP::Member &member );
+
+
+    void save();
+
 signals:
 
 private:
@@ -36,6 +55,18 @@ private:
     static ProjectManager* mProjectManager;
 
     QVector<CPP::Member> mItemList;
+
+    QString mProjectName;
+    QString mProjectLocation;
+
+    QJsonObject mConfigObject;
+
+
+    bool saveHeader(const CPP::Member &member);
+    bool saveSource( const CPP::Member &member );
+
+    QString recursiveHeaderFunc(const CPP::Member &member);
+    QString recursiveSourceFunc(const CPP::Member &member);
 };
 
 } // namespace Global

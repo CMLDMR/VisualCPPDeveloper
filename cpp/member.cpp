@@ -86,6 +86,16 @@ Member::Type Member::getType() const
     }
 }
 
+void Member::setIncludeFiles(const QString &includeHeaders)
+{
+    this->insert("includes",includeHeaders);
+}
+
+QString Member::getIncludeFiles() const
+{
+    return this->value("includes").toString();
+}
+
 QString Member::getName() const
 {
     return this->value("name").toString();
