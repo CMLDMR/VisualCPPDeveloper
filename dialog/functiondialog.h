@@ -13,10 +13,11 @@ class QPushButton;
 class QHBoxLayout;
 class QLineEdit;
 class QComboBox;
-class QTextEdit;
+class QCompleter;
 
 namespace Global {
 class Highlighter;
+class TextEdit;
 }
 
 
@@ -56,8 +57,9 @@ private:
 
     QVBoxLayout* mMainLayout;
     QLineEdit* mFunctionNameLineEdit;
-    QTextEdit* mDefinationTextEdit;
+    Global::TextEdit* mDefinationTextEdit;
     Global::Highlighter* mHighLighter;
+    QCompleter *completer = nullptr;
 
     QHBoxLayout* mDeclareLayout;
     QComboBox* mReturnTypeComboBox;

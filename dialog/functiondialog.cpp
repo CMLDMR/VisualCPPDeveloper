@@ -2,6 +2,7 @@
 #include "functiondialog.h"
 
 #include "global/highlighter.h"
+#include "global/textedit.h"
 
 #include <QVBoxLayout>
 #include <QPushButton>
@@ -10,6 +11,10 @@
 #include <QLabel>
 #include <QComboBox>
 #include <QTextEdit>
+#include <QCompleter>
+#include <QStringListModel>
+#include <QAbstractItemView>
+
 
 namespace GeneratorDialog {
 
@@ -59,7 +64,7 @@ FunctionDialog::FunctionDialog()
     });
 
 
-    mDefinationTextEdit = new QTextEdit();
+    mDefinationTextEdit = new Global::TextEdit();
     mMainLayout->addWidget(new QLabel("Defination"));
     mHighLighter = new Global::Highlighter();
     QFont font;
@@ -69,6 +74,60 @@ FunctionDialog::FunctionDialog()
     mDefinationTextEdit->setFont(font);
     mHighLighter->setDocument(mDefinationTextEdit->document());
     mMainLayout->addWidget(mDefinationTextEdit);
+
+
+    //TODO: Complete Completer and update Completer Database
+
+    QStringList mList;
+    mList.append("class");
+    mList.append("int");
+    mList.append("kestane");
+    mList.append("Global");
+    mList.append("Global1");
+
+    auto model = new QStringListModel(completer);
+
+
+    model->setStringList(mList);
+
+
+    completer = new QCompleter(mList,mDefinationTextEdit);
+//    completer->setModel(model);
+//    completer->setModelSorting(QCompleter::CaseInsensitivelySortedModel);
+    completer->setCaseSensitivity(Qt::CaseInsensitive);
+    completer->setWrapAround(false);
+    mDefinationTextEdit->setCompleter(completer);
+
+//    completer->setModelSorting(QCompleter::CaseInsensitivelySortedModel);
+//    completer->setCaseSensitivity(Qt::CaseInsensitive);
+//    completer->setWrapAround(false);
+//    completer->setCompletionMode(QCompleter::PopupCompletion);
+//    completer->setCaseSensitivity(Qt::CaseInsensitive);
+//    QObject::connect(completer, QOverload<const QString &>::of(&QCompleter::activated),
+//                     [=](const QString &completion){
+//                         if (completer->widget() != this)
+//                             return;
+//                         QTextCursor tc = mDefinationTextEdit->textCursor();
+//                         int extra = completion.length() - completer->completionPrefix().length();
+//                         tc.movePosition(QTextCursor::Left);
+//                         tc.movePosition(QTextCursor::EndOfWord);
+//                         tc.insertText(completion.right(extra));
+//                         mDefinationTextEdit->setTextCursor(tc);
+//                     });
+
+//    QObject::connect(mDefinationTextEdit, &QTextEdit::textChanged,
+//                     [=](){
+//                         auto xPos = mDefinationTextEdit->cursorRect().x();
+//                         auto yPos = mDefinationTextEdit->cursorRect().y();
+//                         auto point = this->mapToGlobal(QPointF(xPos,yPos));
+//                         completer->popup()->setGeometry(point.x(),point.y(),250,350);
+//                         completer->popup()->show();
+//                         qDebug() << "changed";
+//                     });
+
+
+//    mDefinationTextEdit->setCompleter(completer);
+
 
 
     mControllerLayout = new QHBoxLayout();
