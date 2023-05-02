@@ -3,6 +3,7 @@
 
 #include "global/highlighter.h"
 #include "global/textedit.h"
+#include "global/codecompleter.h"
 
 #include <QVBoxLayout>
 #include <QPushButton>
@@ -80,55 +81,33 @@ FunctionDialog::FunctionDialog()
 
     QStringList mList;
     mList.append("class");
+    mList.append("class1");
+    mList.append("class2");
+    mList.append("class3");
+    mList.append("class4");
+    mList.append("class5");
+    mList.append("class6");
+    mList.append("class7");
     mList.append("int");
     mList.append("kestane");
     mList.append("Global");
     mList.append("Global1");
 
-    auto model = new QStringListModel(completer);
+//    auto model = new QStringListModel(completer);
+//    model->setStringList(mList);
+
+//    for( int i = 0 ; i < Global::CodeContainer::instance()->codeCompleterModel()->rowCount(QModelIndex()) ; i++){
+////        qDebug() << Global::CodeContainer::instance()->codeCompleterModel(crea);
+//    }
 
 
-    model->setStringList(mList);
-
-
-    completer = new QCompleter(mList,mDefinationTextEdit);
-//    completer->setModel(model);
-//    completer->setModelSorting(QCompleter::CaseInsensitivelySortedModel);
+    completer = new QCompleter(Global::CodeContainer::instance()->codeCompleterModel());
+    completer->setModel(Global::CodeContainer::instance()->codeCompleterModel());
+    completer->setModelSorting(QCompleter::CaseInsensitivelySortedModel);
     completer->setCaseSensitivity(Qt::CaseInsensitive);
     completer->setWrapAround(false);
+    completer->setFilterMode(Qt::MatchFlag::MatchContains);
     mDefinationTextEdit->setCompleter(completer);
-
-//    completer->setModelSorting(QCompleter::CaseInsensitivelySortedModel);
-//    completer->setCaseSensitivity(Qt::CaseInsensitive);
-//    completer->setWrapAround(false);
-//    completer->setCompletionMode(QCompleter::PopupCompletion);
-//    completer->setCaseSensitivity(Qt::CaseInsensitive);
-//    QObject::connect(completer, QOverload<const QString &>::of(&QCompleter::activated),
-//                     [=](const QString &completion){
-//                         if (completer->widget() != this)
-//                             return;
-//                         QTextCursor tc = mDefinationTextEdit->textCursor();
-//                         int extra = completion.length() - completer->completionPrefix().length();
-//                         tc.movePosition(QTextCursor::Left);
-//                         tc.movePosition(QTextCursor::EndOfWord);
-//                         tc.insertText(completion.right(extra));
-//                         mDefinationTextEdit->setTextCursor(tc);
-//                     });
-
-//    QObject::connect(mDefinationTextEdit, &QTextEdit::textChanged,
-//                     [=](){
-//                         auto xPos = mDefinationTextEdit->cursorRect().x();
-//                         auto yPos = mDefinationTextEdit->cursorRect().y();
-//                         auto point = this->mapToGlobal(QPointF(xPos,yPos));
-//                         completer->popup()->setGeometry(point.x(),point.y(),250,350);
-//                         completer->popup()->show();
-//                         qDebug() << "changed";
-//                     });
-
-
-//    mDefinationTextEdit->setCompleter(completer);
-
-
 
     mControllerLayout = new QHBoxLayout();
     mAcceptedBtn = new QPushButton("OK");
