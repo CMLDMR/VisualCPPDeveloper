@@ -35,6 +35,11 @@ private:
 
 private:
     QCompleter *c = nullptr;
+
+
+    // QObject interface
+public:
+    virtual bool event(QEvent *event) override;
 };
 
 } // namespace Global
