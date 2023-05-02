@@ -5,7 +5,6 @@
 #include <QDialog>
 
 #include <QObject>
-#include <QTextEdit>
 
 #include "cpp/function.h"
 
@@ -14,6 +13,11 @@ class QPushButton;
 class QHBoxLayout;
 class QLineEdit;
 class QComboBox;
+class QTextEdit;
+
+namespace Global {
+class Highlighter;
+}
 
 
 namespace GeneratorDialog {
@@ -53,6 +57,7 @@ private:
     QVBoxLayout* mMainLayout;
     QLineEdit* mFunctionNameLineEdit;
     QTextEdit* mDefinationTextEdit;
+    Global::Highlighter* mHighLighter;
 
     QHBoxLayout* mDeclareLayout;
     QComboBox* mReturnTypeComboBox;

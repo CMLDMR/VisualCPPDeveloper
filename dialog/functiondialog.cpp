@@ -1,12 +1,15 @@
 
 #include "functiondialog.h"
 
+#include "global/highlighter.h"
+
 #include <QVBoxLayout>
 #include <QPushButton>
 #include <QHBoxLayout>
 #include <QLineEdit>
 #include <QLabel>
 #include <QComboBox>
+#include <QTextEdit>
 
 namespace GeneratorDialog {
 
@@ -58,6 +61,13 @@ FunctionDialog::FunctionDialog()
 
     mDefinationTextEdit = new QTextEdit();
     mMainLayout->addWidget(new QLabel("Defination"));
+    mHighLighter = new Global::Highlighter();
+    QFont font;
+    font.setFamily("Courier");
+    font.setFixedPitch(true);
+    font.setPointSize(10);
+    mDefinationTextEdit->setFont(font);
+    mHighLighter->setDocument(mDefinationTextEdit->document());
     mMainLayout->addWidget(mDefinationTextEdit);
 
 
