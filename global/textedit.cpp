@@ -90,8 +90,7 @@ void TextEdit::focusInEvent(QFocusEvent *e)
 //! [7]
 void TextEdit::keyPressEvent(QKeyEvent *e)
 {
-    qDebug() << e;
-    if (c && c->popup()->isVisible()) {
+    if (c && c->popup()->isVisible() ) {
         // The following keys are forwarded by the completer to the widget
         switch (e->key()) {
         case Qt::Key_Enter:
@@ -106,6 +105,8 @@ void TextEdit::keyPressEvent(QKeyEvent *e)
         }
     }
 
+
+
     const bool isShortcut = (e->modifiers().testFlag(Qt::ControlModifier) && e->key() == Qt::Key_E); // CTRL+E
     if (!c || !isShortcut) // do not process the shortcut when we have a completer
         QTextEdit::keyPressEvent(e);
@@ -117,7 +118,7 @@ void TextEdit::keyPressEvent(QKeyEvent *e)
     if (!c || (ctrlOrShift && e->text().isEmpty()))
         return;
 
-    static QString eow("~!@#$%^&*()_+{}|:\"<>?,./;'[]\\-="); // end of word
+    static QString eow("~!@#$%^&*()_+{}|\"<>?,./;'[]\\-="); // end of word
     const bool hasModifier = (e->modifiers() != Qt::NoModifier) && !ctrlOrShift;
     QString completionPrefix = textUnderCursor();
 
@@ -127,13 +128,13 @@ void TextEdit::keyPressEvent(QKeyEvent *e)
         return;
     }
 
-    if (completionPrefix != c->completionPrefix()) {
+    if (completionPrefix != c->completionPrefix() ) {
         c->setCompletionPrefix(completionPrefix);
         c->popup()->setCurrentIndex(c->completionModel()->index(0, 0));
     }
+
     QRect cr = cursorRect();
-    cr.setWidth(c->popup()->sizeHintForColumn(0)
-                + c->popup()->verticalScrollBar()->sizeHint().width());
+    cr.setWidth(200);
     c->complete(cr); // popup it up!
 }
 //! [8]
