@@ -4,24 +4,36 @@
 
 #include <QGraphicsItem>
 
+#include <QVector>
+#include <QRectF>
+#include <QMap>
+#include <tuple>
+
 #include "abstractitem.h"
 
 namespace CPP {
 
 class Member;
 
-namespace Function{
-class Function;
-}
 
 namespace File {
 class File;
+}
+
+
+namespace Function{
+class Function;
 }
 
 }
 
 
 namespace Items {
+
+inline const QColor functionBackGroundColor(200,170,170);
+
+
+
 
 class Function : public AbstractItem
 {
@@ -39,6 +51,8 @@ private:
 
     void editFunction();
 
+    QMap<std::tuple<qreal,qreal,qreal,qreal>,int> mMenuRectList;
+
 
     // QGraphicsItem interface
 public:
@@ -48,6 +62,14 @@ public:
     // QGraphicsItem interface
 protected:
     virtual void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event) override;
+
+    // QGraphicsItem interface
+protected:
+    virtual void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
+
+    // QGraphicsItem interface
+protected:
+    virtual void hoverMoveEvent(QGraphicsSceneHoverEvent *event) override;
 };
 
 } // namespace Items

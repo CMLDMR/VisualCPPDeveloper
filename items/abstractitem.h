@@ -9,10 +9,12 @@
 #include <QAction>
 #include "global/abstractitem.h"
 
+#include <QFontMetricsF>
 
 
 
 namespace Items {
+
 
 
 
