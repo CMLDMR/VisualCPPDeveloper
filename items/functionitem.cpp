@@ -46,23 +46,17 @@ void Function::initMenu()
         mDialog->setIncludeFiles(mFile->includeFiles());
         mDialog->exec();
         if( mDialog->isAccepted() ){
-//            mFile->setIncludeFiles(mDialog->getIncludeFiles());
             mFunction->setIncludeFiles(mDialog->getIncludeFiles());
         }
         delete mDialog;
     });
 
     QObject::connect(saveAction,&QAction::triggered,[=](){
-
         Global::ProjectManager::instance()->append(*mFunction);
         Global::ProjectManager::instance()->generateCode(*mFunction);
-
-//        mFile->addFunction(*mFunction);
-//        mFile->saveMembers();
     });
 
     QObject::connect(saveToFileAction,&QAction::triggered,[=](){
-//        mFile->saveFiles();
         Global::ProjectManager::instance()->save();
 
     });
