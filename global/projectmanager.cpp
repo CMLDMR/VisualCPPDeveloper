@@ -69,8 +69,14 @@ bool ProjectManager::saveHeader(const CPP::Member &member)
         dir.mkdir("headers");
     }
 
+    QString fileName = mProjectLocation+"/headers/"+member.getName().toLower()+".h";
+
+
     // For Header
-    QFile file(mProjectLocation+"/headers/"+member.getName().toLower()+".h");
+    QFile file(fileName);
+    if( file.exists() ){
+        file.remove();
+    }
     if( file.open(QIODeviceBase::ReadWrite | QIODevice::Text ) ){
         QTextStream out(&file);
         out << "#ifndef " + member.getName().toUpper()+"_H\n";
@@ -101,7 +107,14 @@ bool ProjectManager::saveSource(const CPP::Member &member)
         dir.mkdir("src");
     }
 
-    QFile file(mProjectLocation+"/src/"+member.getName().toLower()+".cpp");
+    QString filename = mProjectLocation+"/src/"+member.getName().toLower()+".cpp";
+
+    QFile file(filename);
+
+    if( file.exists() ){
+        file.remove();
+    }
+
     if( file.open(QIODeviceBase::ReadWrite | QIODevice::Text ) ){
         QTextStream out(&file);
         out << "#include \"" + member.getName()+".h\"\n";
